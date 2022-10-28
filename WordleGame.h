@@ -13,17 +13,20 @@ class WordleGame
 {
 private:
     string file;
+    uint32_t dictSize;
+    
     std::unordered_set<string> cuvinte;
     std::vector<string> vcuvinte;
     string word;
 
 public:
-    explicit WordleGame() {file = "cuvinte.txt";}
-    explicit WordleGame(const string& fisier) {file = fisier;}
+    explicit WordleGame(const string& fisier, uint32_t dictSz = 0) 
+    {
+        file = fisier;
+        dictSize = dictSz;
+    }
     void init();
-    void play();
+    void play(const string& forceCuv = "");
     void clear();
-    void hint(uint32_t sz);
-    void setfile(const string& src);
 };
 #endif //WORDLE_WORDLEGAME_H
