@@ -4,46 +4,15 @@
 #include <set>
 using namespace std;
 
-void WordleGame::init()
-{
-    cuvinte.reserve(dictSize);
-    vcuvinte.reserve(dictSize);
-    
-    ifstream in(file);
-    if(!in.is_open())
-    {
-        cout << "Fisierul " << file << " nu a putut fi deschis!" << endl;
-        throw NULL;
-    }
-    while(!in.eof())
-    {
-        string s;
-        in >> s;
-        if(s.size() != 5)
-        {
-            cout << "Cuvantul " << s << " nu are 5 litere!" << endl;
-            continue;
-        }
-        cuvinte.insert(s);
-        vcuvinte.push_back(s);
-    }
-    in.close();
-    cout << "Dictionar incarcat." << endl;
-}
-
 void WordleGame::play(const string& forceCuv)
 {
-    if(cuvinte.empty() || vcuvinte.empty())
-    {
-        init();
-    }
-
+    string word;
     string guess;
     set<char> litere;
 
     srand(time(NULL));
-    int indexCuv = rand() % cuvinte.size();
-    word = vcuvinte[indexCuv];
+    int indexCuv = rand() % dictionary.cuvinte.size();
+    word = dictionary.vcuvinte[indexCuv];
     
     if (!forceCuv.empty()) word = forceCuv;
     
@@ -78,7 +47,7 @@ void WordleGame::play(const string& forceCuv)
             continue;
         }
 
-        if(cuvinte.find(guess) == cuvinte.end())
+        if(dictionary.cuvinte.find(guess) == dictionary.cuvinte.end())
         {
             cout<<"Cuvantul introdus nu face parte din dictionar! Introdu alt cuvant:"<<endl;
             continue;
@@ -99,11 +68,4 @@ void WordleGame::play(const string& forceCuv)
     }while(guess != word);
 
     cout<< "FELICITARI! Ai ghicit cuvantul!\n" <<endl;
-}
-
-void WordleGame::clear()
-{
-    cuvinte.clear();
-    vcuvinte.clear();
-    file.clear();
 }

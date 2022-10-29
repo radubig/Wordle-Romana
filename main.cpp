@@ -6,10 +6,12 @@ int main()
 {
     try
     {
-        WordleGame game("cuvinte.txt", 11454);
-        game.init();
+        WordleDict dict("cuvinte.txt", 11454);
+        dict.init();
+        WordleGame game(dict);
         game.play();
-        game.clear();
+
+        dict.clear();
         return 0;
     }
     catch (...)
