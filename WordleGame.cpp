@@ -1,28 +1,24 @@
 #include "WordleGame.h"
 #include <cstring>
 #include <random>
-#include <set>
+
 using namespace std;
 
 void WordleGame::play(const string& forceCuv)
 {
     string word;
     string guess;
-    set<char> litere;
 
     srand(time(NULL));
     int indexCuv = rand() % dictionary.cuvinte.size();
     word = dictionary.vcuvinte[indexCuv];
     
     if (!forceCuv.empty()) word = forceCuv;
-    
-    for(const char& c : word)
-        litere.insert(c);
 
     cout << "Wordle in romana: incearca sa ghicesti un cuvant de 5 litere!\n"
-               //"Introdu cuvinte de cate 5 litere pana cand ghicesti cuvantul!\n"
-                 "Vei primi la fiecare incercare indicatii despre ce litere fac parte din cuvant.\n\n"
-                 "Esti pregatit? Tasteaza un cuvant de 5 litere:" << endl;
+          //"Introdu cuvinte de cate 5 litere pana cand ghicesti cuvantul!\n"
+            "Vei primi la fiecare incercare indicatii despre ce litere fac parte din cuvant.\n\n"
+            "Esti pregatit? Tasteaza un cuvant de 5 litere:" << endl;
     do
     {
         cin >> guess;
@@ -53,14 +49,37 @@ void WordleGame::play(const string& forceCuv)
             continue;
         }
 
-        //Aici este impementata logica de determinare a literelor corecte
+        int litere[30] = {0};
+        int status[5] = {0}; /* Va fi considerata urmatoarea codare:
+                * status[i] = 0 => litera gri
+                * status[i] = 1 => litera verde
+                * status[i] = 2 => litera galbena */
+
+        for(const char& c : word)
+            litere[c - 'A']++;
+
+        //Logica litere noua
+        //pass 1: determinare litere verzi
+        for(int i=0; i<5; i++) if(guess[i] == word[i])
+        {
+            status[i] = 1;
+            litere[guess[i] - 'A']--;
+        }
+        //pass 2: determinare litere galbene
+        for(int i=0; i<5; i++) if(status[i] == 0 && litere[guess[i] - 'A'] > 0)
+        {
+            status[i] = 2;
+            litere[guess[i] - 'A']--;
+        }
+
+        //TODO: De colorat literele corespunzator in consola!
         for(int i=0; i<5; i++)
         {
-            if(guess[i] == word[i])
+            if(status[i] == 1)
                 cout<<guess[i]<<": Corect!\n";
-            else if(litere.find(guess[i]) != litere.end())
+            else if(status[i] == 2)
                 cout<<guess[i]<<": Alta pozitie!\n";
-            else
+            else //status[i] == 0
                 cout<<guess[i]<<": Nu exista!\n";
         }
         cout<<endl;

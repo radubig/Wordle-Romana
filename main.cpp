@@ -9,7 +9,7 @@ int main()
         WordleDict dict("cuvinte.txt", 11454);
         dict.init();
         WordleGame game(dict);
-        game.play();
+        game.play("ABRAS");
 
         dict.clear();
         return 0;
