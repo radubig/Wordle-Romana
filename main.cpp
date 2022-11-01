@@ -1,15 +1,20 @@
 #include <iostream>
 #include "WordleGame.h"
+#include "Analyzer.h"
 using namespace std;
 
 int main()
 {
+    //Timp de rulare cod in Modul Debug: ~15 secunde
+    //Timp de rulare cod in Modul Release: ~2 secunde
+
     try
     {
         WordleDict dict("cuvinte.txt", 11454);
         dict.init();
-        WordleGame game(dict);
-        game.play("ABRAS");
+
+        Analyzer analyzer(dict);
+        analyzer.run();
 
         dict.clear();
         return 0;
