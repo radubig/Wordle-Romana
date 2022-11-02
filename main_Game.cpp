@@ -9,7 +9,7 @@ int main()
         dict.init();
 
         WordleGame game(dict);
-        game.play("CRETA");
+        game.play();
     }
     catch(...)
     {

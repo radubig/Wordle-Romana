@@ -87,7 +87,7 @@ void WordleGame::play(const string& forceCuv)
                     9  * status[2] +
                     3  * status[3] +
                     status[4];
-        cout<<"Cod pattern: " << cod_p;
+        cout<<"Cod pattern: " << cod_p << "\n";
         cout<<endl;
 
     }while(guess != word);
