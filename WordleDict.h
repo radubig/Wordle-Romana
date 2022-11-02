@@ -11,7 +11,7 @@ using std::string;
 class WordleDict {
 private:
     string file;
-    uint32_t dictSize;
+    uint32_t dictSize; //Asta e hint
 
 public:
     std::unordered_set<string> cuvinte;

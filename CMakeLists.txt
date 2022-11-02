@@ -3,4 +3,6 @@ project(Wordle)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(Wordle main.cpp WordleGame.h WordleGame.cpp WordleDict.cpp WordleDict.h Analyzer.cpp Analyzer.h)
+add_executable(Wordle main.cpp WordleGame.h WordleGame.cpp WordleDict.cpp WordleDict.h Analyzer.cpp Analyzer.h WordlePlayer.cpp WordlePlayer.h)
+add_executable(Wordle_Game WordleGame.h WordleGame.cpp WordleDict.cpp WordleDict.h main_Game.cpp)
+add_executable(Wordle_Player WordleDict.h WordleDict.cpp WordleGame.cpp WordleGame.h WordlePlayer.cpp WordlePlayer.h main_Player.cpp)
