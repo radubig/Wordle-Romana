@@ -1,5 +1,5 @@
 #include "WordlePlayer.h"
-#include "Analyzer.h" //pentru AData
+#include "../analyzer/Analyzer.h"
 #include <iostream>
 #include <cmath>
 #include <fstream>

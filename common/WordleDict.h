@@ -6,22 +6,20 @@
 #include <string>
 #include <unordered_set>
 #include <vector>
-using std::string;
+
+using namespace std;
 
 class WordleDict {
 private:
     string file;
-    uint32_t dictSize; //Asta e hint
 
 public:
-    std::unordered_set<string> cuvinte;
-    std::vector<string> vcuvinte;
+    unordered_set<string> cuvinte;
+    vector<string> vcuvinte;
 
-    WordleDict(const string& fisier, uint32_t dictSz = 0)
-        :file(fisier), dictSize(dictSz) {}
+    explicit WordleDict(string fisier) :file(std::move(fisier)) { }
     void init();
     void clear();
 };
-
 
 #endif //WORDLE_WORDLEDICT_H

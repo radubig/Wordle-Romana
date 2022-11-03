@@ -4,9 +4,6 @@
 using namespace std;
 
 void WordleDict::init() {
-    cuvinte.reserve(dictSize);
-    vcuvinte.reserve(dictSize);
-
     ifstream in(file);
     if(!in.is_open())
     {

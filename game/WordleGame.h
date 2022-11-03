@@ -3,7 +3,7 @@
 #ifndef WORDLE_WORDLEGAME_H
 #define WORDLE_WORDLEGAME_H
 
-#include "WordleDict.h"
+#include "../common/WordleDict.h"
 #include <iostream>
 
 using std::string;

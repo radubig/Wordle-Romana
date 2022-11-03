@@ -3,7 +3,7 @@
 #ifndef WORDLE_WORDLEPLAYER_H
 #define WORDLE_WORDLEPLAYER_H
 
-#include "WordleDict.h"
+#include "../common/WordleDict.h"
 
 class WordlePlayer
 {
