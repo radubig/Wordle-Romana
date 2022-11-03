@@ -29,7 +29,7 @@ void analyzer::run()
     vector<word_data> ent_cuvinte = entropy::calculate_entropy(dictionary.vcuvinte, dictionary.vcuvinte);
     sort(ent_cuvinte.begin(), ent_cuvinte.end(), greater<>());
 
-    ofstream out("../entropy_list.txt");
+    ofstream out("../first_guess_entropy.txt");
     for (const word_data& i : ent_cuvinte)
     {
         out << i.word << " : " << i.entropy << "\n";

@@ -6,6 +6,7 @@
 #include <string>
 
 #define GRAY 0
+#define GREY GRAY // For the british
 #define GREEN 1
 #define YELLOW 2
 
