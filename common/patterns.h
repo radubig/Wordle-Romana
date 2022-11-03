@@ -15,9 +15,9 @@
 class patterns
 {
 public:
-    static int* get_pattern(const std::string& target, const std::string& guess);
+    static int* const& get_pattern(const std::string& target, const std::string& guess);
     static int encode_pattern(const int* status);
-    static int* decode_pattern(int cod_p);
+    static int* const& decode_pattern(int cod_p);
 };
 
 #endif //WORDLE_PATTERNS_H

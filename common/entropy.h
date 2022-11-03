@@ -9,7 +9,7 @@
 class entropy
 {
 public:
-    static std::vector<word_data>* calculate_entropy(const std::vector<std::string> &cuvinte);
+    static std::vector<word_data> const& calculate_entropy(const std::vector<std::string> &cuvinte);
 };
 
 #endif //WORDLE_ENTROPY_H

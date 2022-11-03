@@ -94,8 +94,6 @@ void wordle_player::update(const string &guessed_word, int word_pattern)
         if (goodWord) newlist.push_back(word);
     }
     
-    delete status_guess;
-
     words_list = newlist;
 
     cout << "Cuvinte posibile: ";
@@ -108,7 +106,7 @@ string wordle_player::analyze()
 {
     string best_word;
 
-    vector<word_data>* ent_cuvinte = entropy::calculate_entropy(words_list);
+    vector<word_data> ent_cuvinte = entropy::calculate_entropy(words_list);
 
 /*    double mx = 0.0;
     for (const word_data &word : *ent_cuvinte)
@@ -120,9 +118,9 @@ string wordle_player::analyze()
         }
     }*/
 
-    sort(ent_cuvinte->begin(), ent_cuvinte->end(), greater<>());
+    sort(ent_cuvinte.begin(), ent_cuvinte.end(), greater<>());
 
-    best_word = (*ent_cuvinte)[0].word;
+    best_word = ent_cuvinte[0].word;
     
 /*    ofstream out("../entropy_dump.txt");
     for (const word_data& i : *ent_cuvinte)
@@ -131,6 +129,5 @@ string wordle_player::analyze()
     }
     out.close();*/
 
-    delete ent_cuvinte;
     return best_word;
 }

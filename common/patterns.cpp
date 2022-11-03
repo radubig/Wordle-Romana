@@ -1,9 +1,20 @@
 #include "patterns.h"
 
-int* patterns::get_pattern(const std::string &target, const std::string &guess)
+int *pattern = new int[5] {GRAY};
+
+void clear_pattern()
+{
+    for (int i = 0; i < 5; i++)
+    {
+        pattern[i] = GRAY;
+    }
+}
+
+int* const& patterns::get_pattern(const std::string &target, const std::string &guess)
 {
     int litere[26] = {0};
-    static int status[5] = {GRAY};
+
+    clear_pattern();
 
     /* Va fi considerata urmatoarea codare:
      * status[i] = 0 => litera gri
@@ -20,7 +31,7 @@ int* patterns::get_pattern(const std::string &target, const std::string &guess)
     {
         if (guess[i] == target[i])
         {
-            status[i] = GREEN;
+            pattern[i] = GREEN;
             litere[guess[i] - 'A']--;
         }
     }
@@ -28,14 +39,14 @@ int* patterns::get_pattern(const std::string &target, const std::string &guess)
     // Pasul 3: Determinam literele galbene
     for (int i = 0; i < 5; i++)
     {
-        if (status[i] == 0 && litere[guess[i] - 'A'] > 0)
+        if (pattern[i] == 0 && litere[guess[i] - 'A'] > 0)
         {
-            status[i] = YELLOW;
+            pattern[i] = YELLOW;
             litere[guess[i] - 'A']--;
         }
     }
     
-    return status;
+    return pattern;
 }
 
 int patterns::encode_pattern(const int* status) 
@@ -43,15 +54,15 @@ int patterns::encode_pattern(const int* status)
     return 81 * status[0] + 27 * status[1] + 9 * status[2] + 3 * status[3] + status[4];
 }
 
-int* patterns::decode_pattern(int cod_p) 
+int* const& patterns::decode_pattern(int cod_p) 
 {
-    static int status[5] = {0};
+    clear_pattern();
     
     for (int i = 4; i >= 0; i--)
     {
-        status[i] = cod_p % 3;
+        pattern[i] = cod_p % 3;
         cod_p /= 3;
     }
     
-    return status;
+    return pattern;
 }

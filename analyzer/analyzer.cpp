@@ -26,17 +26,15 @@ void analyzer::run()
 {
     cout << "Te rog asteapta..." << endl;
 
-    vector<word_data>* ent_cuvinte = entropy::calculate_entropy(dictionary.vcuvinte);
-    sort(ent_cuvinte->begin(), ent_cuvinte->end(), greater<>());
+    vector<word_data> ent_cuvinte = entropy::calculate_entropy(dictionary.vcuvinte);
+    sort(ent_cuvinte.begin(), ent_cuvinte.end(), greater<>());
 
     ofstream out("../entropy_list.txt");
-    for (const word_data& i : *ent_cuvinte)
+    for (const word_data& i : ent_cuvinte)
     {
         out << i.word << " : " << i.entropy << "\n";
     }
     out.close();
     
-    delete ent_cuvinte;
-
     cout << "Rezultate salvate in entropy_list.txt" << endl;
 }

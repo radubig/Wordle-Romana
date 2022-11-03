@@ -3,9 +3,16 @@
 #include "patterns.h"
 using namespace std;
 
-vector<word_data>* entropy::calculate_entropy(const vector<string> &cuvinte)
+vector<word_data> entropies;
+
+void clear_entropy()
 {
-    static vector<word_data> ent_cuvinte;
+    entropies.clear();
+}
+
+vector<word_data> const& entropy::calculate_entropy(const vector<string> &cuvinte)
+{
+    clear_entropy();
     
     for (const string& word : cuvinte)
     {
@@ -15,7 +22,6 @@ vector<word_data>* entropy::calculate_entropy(const vector<string> &cuvinte)
         {
             int* status = patterns::get_pattern(word, guess);
             int cod_p = patterns::encode_pattern(status);
-            delete status;
             patterns[cod_p]++;
         }
 
@@ -27,9 +33,9 @@ vector<word_data>* entropy::calculate_entropy(const vector<string> &cuvinte)
             double v = p * log2(1.0 / p);
             entropy += v;
         }
-        
-        ent_cuvinte.emplace_back(word, entropy);
+
+        entropies.emplace_back(word, entropy);
     }
     
-    return &ent_cuvinte;
+    return entropies;
 }

@@ -24,7 +24,6 @@ void wordle_game::play(const string& forceCuv)
     do
     {
         cin >> guess;
-        incercari++;
 
         if (guess.size() != 5)
         {
@@ -58,6 +57,8 @@ void wordle_game::play(const string& forceCuv)
             continue;
         }
 
+        incercari++;
+
         int* status = patterns::get_pattern(word, guess);
 
         for (int i=0; i<5; i++)
@@ -71,10 +72,9 @@ void wordle_game::play(const string& forceCuv)
         }
         
         int cod_p = patterns::encode_pattern(status);
-        delete status;
         
         cout << "Codul raspunsului: " << cod_p << "\n" << endl;
-
+        cout << "Introdu urmatorul cuvant: " << endl;
     } while(guess != word);
 
     if (incercari == 1)
