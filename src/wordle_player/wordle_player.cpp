@@ -13,6 +13,8 @@ void wordle_player::reset()
 
 string wordle_player::get_best_guess()
 {
+    if (words_list.size() == 1) return words_list[0];
+    
     string best_word;
 
     vector<word_data> ent_cuvinte = entropy::calculate_entropy(dictionary.vcuvinte, words_list);
