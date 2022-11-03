@@ -7,8 +7,6 @@
 
 #include "../common/word_dict.h"
 
-using namespace std;
-
 class wordle_game
 {
 private:
@@ -16,7 +14,7 @@ private:
 
 public:
     explicit wordle_game(const word_dict& dict) : dictionary(dict) { }
-    void play(const string& forceCuv = "");
+    void play(const std::string& forceCuv = "");
 };
 
 #endif //WORDLE_WORDLE_GAME_H

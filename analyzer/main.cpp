@@ -16,12 +16,11 @@ int main()
         analyzer analyzer(dict);
         analyzer.run();
 
-        dict.clear();
         return 0;
     }
     catch (...)
     {
-        cout << "A aparut o eroare.";
-        return 1;
+        cerr << "A aparut o eroare." << endl;
+        return -1;
     }
 }

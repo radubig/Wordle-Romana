@@ -7,20 +7,17 @@
 #include <unordered_set>
 #include <vector>
 
-using namespace std;
-
 class word_dict
 {
 private:
-    string file;
+    std::string file;
 
 public:
-    unordered_set<string> cuvinte;
-    vector<string> vcuvinte;
+    std::unordered_set<std::string> cuvinte;
+    std::vector<std::string> vcuvinte;
 
-    explicit word_dict(string fisier) : file(std::move(fisier)) { }
+    explicit word_dict(std::string fisier) : file(std::move(fisier)) { }
     void init();
-    void clear();
 };
 
 #endif //WORDLE_WORD_DICT_H

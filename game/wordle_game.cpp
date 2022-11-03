@@ -1,6 +1,6 @@
 #include <random>
 #include "wordle_game.h"
-#include "../common/wordle.h"
+#include "../common/patterns.h"
 
 using namespace std;
 
@@ -58,19 +58,19 @@ void wordle_game::play(const string& forceCuv)
             continue;
         }
 
-        int* status = wordle::getPattern(word, guess);
+        int* status = patterns::get_pattern(word, guess);
 
-        for(int i=0; i<5; i++)
+        for (int i=0; i<5; i++)
         {
-            if (status[i] == VERDE)
+            if (status[i] == GREEN)
                 cout << guess[i] << ": Corect!\n";
-            else if (status[i] == GALBEN)
+            else if (status[i] == YELLOW)
                 cout << guess[i] << ": Alta pozitie!\n";
             else
                 cout << guess[i] << ": Nu exista!\n";
         }
         
-        int cod_p = encodePattern(status);
+        int cod_p = patterns::encode_pattern(status);
         delete status;
         
         cout << "Codul raspunsului: " << cod_p << "\n" << endl;

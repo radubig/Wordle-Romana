@@ -1,5 +1,6 @@
 #include <iostream>
 #include "wordle_game.h"
+using namespace std;
 
 int main()
 {
@@ -15,7 +16,7 @@ int main()
     }
     catch(...)
     {
-        std::cerr << "A aparut o eroare." << std::endl;
+        cout << "A aparut o eroare." << std::endl;
         return -1;
     }
 }

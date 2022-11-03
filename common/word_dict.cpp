@@ -7,12 +7,12 @@ using namespace std;
 void word_dict::init()
 {
     ifstream in(file);
-    if(!in.is_open())
+    if (!in.is_open())
     {
         cout << "Fisierul " << file << " nu a putut fi deschis!" << endl;
         throw runtime_error("");
     }
-    while(!in.eof())
+    while (!in.eof())
     {
         string s;
         in >> s;
@@ -26,11 +26,4 @@ void word_dict::init()
     }
     in.close();
     cout << "Dictionar incarcat." << endl;
-}
-
-void word_dict::clear()
-{
-    cuvinte.clear();
-    vcuvinte.clear();
-    file.clear();
 }

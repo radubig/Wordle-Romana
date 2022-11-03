@@ -4,8 +4,8 @@
 #include <iostream>
 #include <vector>
 #include "analyzer.h"
-#include "../common/word_data.h"
-#include "../common/wordle.h"
+#include "../common/entropy.h"
+#include "../common/patterns.h"
 using namespace std;
 
 /* IDEA CORNER:
@@ -22,46 +22,21 @@ using namespace std;
  *      81 * A + 27 * B + 9 * C + 3 * D + E
  */
 
-static const int N_PATTERNS = 243; // 3^5
-
 void analyzer::run()
 {
     cout << "Te rog asteapta..." << endl;
 
-    vector<word_data> ent_cuvinte;
-    for (const string& word : dictionary.vcuvinte)
-    {
-        int patterns[N_PATTERNS] = {0};
-        int possible = 0;
-
-        for (const string& guess : dictionary.vcuvinte)
-        {
-            int* status = wordle::getPattern(word, guess);
-            int cod_p = encodePattern(status);
-            delete status;
-            patterns[cod_p]++;
-            possible++;
-        }
-
-        double entropy = 0.0;
-        for (int pattern : patterns)
-        {
-            double p = 1.0 * pattern / possible;
-            if (p == 0) continue;
-            double v = p * log2(1.0 / p);
-            entropy += v;
-        }
-        ent_cuvinte.emplace_back(word, entropy);
-    }
-
-    sort(ent_cuvinte.begin(), ent_cuvinte.end(), greater<>());
+    vector<word_data>* ent_cuvinte = entropy::calculate_entropy(dictionary.vcuvinte);
+    sort(ent_cuvinte->begin(), ent_cuvinte->end(), greater<>());
 
     ofstream out("../entropy_list.txt");
-    for (const word_data& i : ent_cuvinte)
+    for (const word_data& i : *ent_cuvinte)
     {
         out << i.word << " : " << i.entropy << "\n";
     }
     out.close();
+    
+    delete ent_cuvinte;
 
     cout << "Rezultate salvate in entropy_list.txt" << endl;
 }

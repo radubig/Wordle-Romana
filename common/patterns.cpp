@@ -1,9 +1,9 @@
-#include "wordle.h"
+#include "patterns.h"
 
-int* wordle::getPattern(const string& target, const string& guess)
+int* patterns::get_pattern(const std::string &target, const std::string &guess)
 {
     int litere[26] = {0};
-    static int status[5] = {GRI};
+    static int status[5] = {GRAY};
 
     /* Va fi considerata urmatoarea codare:
      * status[i] = 0 => litera gri
@@ -20,7 +20,7 @@ int* wordle::getPattern(const string& target, const string& guess)
     {
         if (guess[i] == target[i])
         {
-            status[i] = VERDE;
+            status[i] = GREEN;
             litere[guess[i] - 'A']--;
         }
     }
@@ -30,9 +30,27 @@ int* wordle::getPattern(const string& target, const string& guess)
     {
         if (status[i] == 0 && litere[guess[i] - 'A'] > 0)
         {
-            status[i] = GALBEN;
+            status[i] = YELLOW;
             litere[guess[i] - 'A']--;
         }
+    }
+    
+    return status;
+}
+
+int patterns::encode_pattern(const int* status) 
+{
+    return 81 * status[0] + 27 * status[1] + 9 * status[2] + 3 * status[3] + status[4];
+}
+
+int* patterns::decode_pattern(int cod_p) 
+{
+    static int status[5] = {0};
+    
+    for (int i = 4; i >= 0; i--)
+    {
+        status[i] = cod_p % 3;
+        cod_p /= 3;
     }
     
     return status;

@@ -4,19 +4,14 @@
 #define WORDLE_WORD_DATA_H
 
 #include <string>
-#include <unordered_set>
-#include <utility>
-#include <vector>
-
-using namespace std;
 
 struct word_data
 {
-    string word;
+    std::string word;
     double entropy;
 
 //    word_data() = default;
-    word_data(const string& _word, double _entropy)
+    word_data(const std::string& _word, double _entropy)
     {
         word = _word;
         entropy = _entropy;
