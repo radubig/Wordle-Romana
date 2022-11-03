@@ -1,0 +1,5 @@
+- Daca mai multe cuvinte impartasesc entropia maxima, sa se aleaga cuvintele din lista posibila de cuvinte prima oara, nu alfabetic
+- Eroare in player
+    Cuvinte posibile: ACCIZ AZOIC 
+    Ghicire: ABACA 87
+    Cuvinte posibile: ACCIZ AZOIC 
