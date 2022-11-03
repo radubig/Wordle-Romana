@@ -30,8 +30,8 @@ void WordlePlayer::run()
     {
         ++counter;
         guess = this->analyze();
-        if(words_list.size() <= 16)
-            cout << "[Wordle Player]: Going For The Win\n";
+        //if(words_list.size() <= 16)
+            //cout << "[Wordle Player]: Going For The Win\n";
         cout << "[Wordle Player]: " << guess << "\n";
         cout << "Input pattern: ";
         cin >> in_pattern;
@@ -89,16 +89,15 @@ void WordlePlayer::update(const string &guessed_word, int word_pattern)
 
     /*dump words_list
     for(const string& word : words_list)
-        cout << word << "\n"; */
+        cout << word << "\n";*/
 }
 
 string WordlePlayer::analyze()
 {
     static const int N_PATTERNS = 243;
-    static const int POSSIBILE = 11454;
     string best_word;
 
-    if(words_list.size() <= 16) //daca avem doar 4 biti de incertitudine atunci mergem for the win (4 e ales arbitrar)
+    if(words_list.size() == 1)
         best_word = words_list[0];
     else
     {
@@ -160,8 +159,8 @@ string WordlePlayer::analyze()
         ofstream out("dump.txt");
         for (const AData &i: ent_cuvinte)
             out << i.word << " : " << i.entropy << "\n";
-        out.close();
-        */
+        out.close();*/
+
     }
 
     return best_word;
