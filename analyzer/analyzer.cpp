@@ -26,7 +26,7 @@ void analyzer::run()
 {
     cout << "Te rog asteapta..." << endl;
 
-    vector<word_data> ent_cuvinte = entropy::calculate_entropy(dictionary.vcuvinte);
+    vector<word_data> ent_cuvinte = entropy::calculate_entropy(dictionary.vcuvinte, dictionary.vcuvinte);
     sort(ent_cuvinte.begin(), ent_cuvinte.end(), greater<>());
 
     ofstream out("../entropy_list.txt");

@@ -106,28 +106,17 @@ string wordle_player::analyze()
 {
     string best_word;
 
-    vector<word_data> ent_cuvinte = entropy::calculate_entropy(words_list);
-
-/*    double mx = 0.0;
-    for (const word_data &word : *ent_cuvinte)
-    {
-        if (word.entropy > mx)
-        {
-            mx = word.entropy;
-            best_word = word.word;
-        }
-    }*/
-
+    vector<word_data> ent_cuvinte = entropy::calculate_entropy(dictionary.vcuvinte, words_list);
     sort(ent_cuvinte.begin(), ent_cuvinte.end(), greater<>());
 
     best_word = ent_cuvinte[0].word;
     
-/*    ofstream out("../entropy_dump.txt");
-    for (const word_data& i : *ent_cuvinte)
+    ofstream out("../entropy_dump.txt");
+    for (const word_data& i : ent_cuvinte)
     {
         out << i.word << " : " << i.entropy << "\n";
     }
-    out.close();*/
+    out.close();
 
     return best_word;
 }
