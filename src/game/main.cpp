@@ -1,6 +1,6 @@
 #include <iostream>
 #include "wordle_game.h"
-#include "../common/patterns.h"
+#include "../_common/patterns.h"
 using namespace std;
 
 int main()
@@ -73,7 +73,7 @@ int main()
 
             cout << "Codul raspunsului: " << pattern_code << "\n" << endl;
             if (pattern_code != GUESSED_PATTERN) cout << "Introdu urmatorul cuvant: " << endl;
-        } while(pattern_code != GUESSED_PATTERN);
+        } while (pattern_code != GUESSED_PATTERN);
 
         if (guesses == 1)
             cout << "FELICITARI! Ai ghicit cuvantul in 1 incercare!\n" << endl;
@@ -82,7 +82,7 @@ int main()
         
         return 0;
     }
-    catch(...)
+    catch (...)
     {
         cout << "A aparut o eroare." << std::endl;
         return -1;

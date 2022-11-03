@@ -16,7 +16,7 @@ void word_dict::init()
     {
         string s;
         in >> s;
-        if(s.size() != 5)
+        if (s.size() != 5)
         {
             cout << "Cuvantul " << s << " nu are 5 litere!" << endl;
             continue;

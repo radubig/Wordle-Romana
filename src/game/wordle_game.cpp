@@ -1,5 +1,5 @@
 #include "wordle_game.h"
-#include "../common/patterns.h"
+#include "../_common/patterns.h"
 
 using namespace std;
 

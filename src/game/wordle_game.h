@@ -5,7 +5,7 @@
 
 #include <iostream>
 
-#include "../common/word_dict.h"
+#include "../_common/word_dict.h"
 
 class wordle_game
 {

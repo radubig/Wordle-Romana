@@ -1,11 +1,10 @@
-#include <cmath>
 #include <fstream>
 #include <functional>
 #include <iostream>
 #include <vector>
-#include "analyzer.h"
-#include "../common/entropy.h"
-#include "../common/patterns.h"
+#include "../_common/entropy.h"
+#include "../_common/patterns.h"
+#include "../_common/word_dict.h"
 using namespace std;
 
 int main()
@@ -30,7 +29,7 @@ int main()
         }
         out.close();
 
-        cout << "Rezultate salvate in entropy_list.txt" << endl;
+        cout << "Rezultate salvate in first_guess_entropy.txt" << endl;
 
         return 0;
     }
