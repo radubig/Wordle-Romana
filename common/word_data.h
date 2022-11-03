@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef WORDLE_WORDDATA_H
-#define WORDLE_WORDDATA_H
+#ifndef WORDLE_WORD_DATA_H
+#define WORDLE_WORD_DATA_H
 
 #include <string>
 #include <unordered_set>
@@ -10,22 +10,22 @@
 
 using namespace std;
 
-struct WordData
+struct word_data
 {
     string word;
     double entropy;
 
 //    WordData() = default;
-    WordData(const string& _word, double _entropy)
+    word_data(const string& _word, double _entropy)
     {
         word = _word;
         entropy = _entropy;
     }
 
-    bool operator >(const WordData& other) const
+    bool operator >(const word_data& other) const
     {
         return entropy > other.entropy || (entropy == other.entropy && word < other.word);
     }
 };
 
-#endif //WORDLE_WORDDATA_H
+#endif //WORDLE_WORD_DATA_H

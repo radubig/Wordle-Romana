@@ -1,5 +1,5 @@
 #include "WordlePlayer.h"
-#include "../analyzer/Analyzer.h"
+#include "../analyzer/analyzer.h"
 #include <iostream>
 #include <cmath>
 #include <fstream>

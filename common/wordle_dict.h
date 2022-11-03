@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef WORDLE_WORDLEDICT_H
-#define WORDLE_WORDLEDICT_H
+#ifndef WORDLE_WORDLE_DICT_H
+#define WORDLE_WORDLE_DICT_H
 
 #include <string>
 #include <unordered_set>
@@ -9,7 +9,7 @@
 
 using namespace std;
 
-class WordleDict {
+class wordle_dict {
 private:
     string file;
 
@@ -17,9 +17,9 @@ public:
     unordered_set<string> cuvinte;
     vector<string> vcuvinte;
 
-    explicit WordleDict(string fisier) :file(std::move(fisier)) { }
+    explicit wordle_dict(string fisier) : file(std::move(fisier)) { }
     void init();
     void clear();
 };
 
-#endif //WORDLE_WORDLEDICT_H
+#endif //WORDLE_WORDLE_DICT_H

@@ -1,14 +1,14 @@
-#include "WordleDict.h"
-#include <iostream>
 #include <fstream>
+#include <iostream>
+#include "wordle_dict.h"
 using namespace std;
 
-void WordleDict::init() {
+void wordle_dict::init() {
     ifstream in(file);
     if(!in.is_open())
     {
         cout << "Fisierul " << file << " nu a putut fi deschis!" << endl;
-        throw NULL;
+        throw runtime_error("");
     }
     while(!in.eof())
     {
@@ -26,7 +26,7 @@ void WordleDict::init() {
     cout << "Dictionar incarcat." << endl;
 }
 
-void WordleDict::clear() {
+void wordle_dict::clear() {
     cuvinte.clear();
     vcuvinte.clear();
     file.clear();

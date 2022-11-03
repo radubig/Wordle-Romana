@@ -3,7 +3,7 @@
 #ifndef WORDLE_WORDLEGAME_H
 #define WORDLE_WORDLEGAME_H
 
-#include "../common/WordleDict.h"
+#include "../common/wordle_dict.h"
 #include <iostream>
 
 using std::string;
@@ -11,10 +11,10 @@ using std::string;
 class WordleGame
 {
 private:
-    const WordleDict& dictionary;
+    const wordle_dict& dictionary;
 
 public:
-    explicit WordleGame(const WordleDict& dict)
+    explicit WordleGame(const wordle_dict& dict)
         :dictionary(dict) {}
     void play(const string& forceCuv = "");
 };

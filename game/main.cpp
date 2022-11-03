@@ -5,7 +5,7 @@ int main()
 {
     try
     {
-        WordleDict dict("cuvinte.txt", 11454);
+        wordle_dict dict("cuvinte.txt", 11454);
         dict.init();
 
         WordleGame game(dict);
