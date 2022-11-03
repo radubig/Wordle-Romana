@@ -10,7 +10,7 @@
 #define GREEN 1
 #define YELLOW 2
 
-#define N_PATTERNS 243 // 3 ^ 5
+#define NUM_PATTERNS 243 // 3 ^ 5
 #define GUESSED_PATTERN 121
 
 class patterns

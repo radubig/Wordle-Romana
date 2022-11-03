@@ -16,7 +16,7 @@ vector<word_data> const& entropy::calculate_entropy(const vector<string> &dictio
     
     for (const string& word : dictionar)
     {
-        int patterns[N_PATTERNS] = {0};
+        int patterns[NUM_PATTERNS] = {0};
 
         for (const string& guess : cuvinteRamase)
         {
