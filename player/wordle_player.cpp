@@ -34,7 +34,7 @@ void wordle_player::run()
         
         guess = this->analyze();
         cout << "Ghiceste: " << guess << "\n"
-                "Input pattern: ";
+                "Introdu codul raspunsului: ";
         cin >> in_pattern;
         this->update(guess, in_pattern);
     }
@@ -49,10 +49,12 @@ void wordle_player::update(const string &guessed_word, int word_pattern)
 {
     int *status_guess = patterns::decode_pattern(word_pattern);
     int galbene_guess[26] = {0};
+    int gri_guess[26] = {0};
 
     for (int i = 0; i < 5; i++)
     {
         if (status_guess[i] == YELLOW) galbene_guess[guessed_word[i] - 'A']++;
+        else if (status_guess[i] == GREY) gri_guess[guessed_word[i] - 'A'] = 1;
     }
 
     std::vector<string> newlist;
@@ -63,7 +65,7 @@ void wordle_player::update(const string &guessed_word, int word_pattern)
 
         for (int i = 0; i < 5; i++)
         {
-            if (status_guess[i] == GREEN) //Verificare litere verzi
+            if (status_guess[i] == GREEN) // Verificare litere verzi
             {
                 if (word[i] != guessed_word[i])
                 {
@@ -71,7 +73,7 @@ void wordle_player::update(const string &guessed_word, int word_pattern)
                     break;
                 }
             }
-            else if (word[i] == guessed_word[i]) //Verificare ca literele neverzi sa nu fie pe aceeasi pozitie
+            else if (word[i] == guessed_word[i]) // Verificare ca literele neverzi sa nu fie pe aceeasi pozitie
             {
                 goodWord = false;
                 break;
@@ -84,11 +86,17 @@ void wordle_player::update(const string &guessed_word, int word_pattern)
 
         for (int i = 0; i < 26; i++)
         {
-            if (litere[i] < galbene_guess[i])
+            if (litere[i] < galbene_guess[i]) // Verificare litere galbene
             {
                 goodWord = false;
                 break;
-            }    
+            }
+            
+            if (gri_guess[i] == 1 && litere[i] > 0) // Verificare litere gri
+            {
+                goodWord = false;
+                break;
+            }
         }
 
         if (goodWord) newlist.push_back(word);
