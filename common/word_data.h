@@ -15,7 +15,7 @@ struct word_data
     string word;
     double entropy;
 
-//    WordData() = default;
+//    word_data() = default;
     word_data(const string& _word, double _entropy)
     {
         word = _word;

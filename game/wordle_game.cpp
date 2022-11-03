@@ -1,0 +1,84 @@
+#include <random>
+#include "wordle_game.h"
+#include "../common/wordle.h"
+
+using namespace std;
+
+void wordle_game::play(const string& forceCuv)
+{
+    string word;
+    string guess;
+
+    srand(time(nullptr)); // NOLINT(cert-msc51-cpp)
+    int indexCuv = rand() % dictionary.cuvinte.size(); // NOLINT(cppcoreguidelines-narrowing-conversions,cert-msc50-cpp)
+    word = dictionary.vcuvinte[indexCuv];
+    
+    if (!forceCuv.empty()) word = forceCuv;
+
+    cout << "Wordle: Incearca sa ghicesti un cuvant de 5 litere!\n"
+            "Vei primi la fiecare incercare indicatii despre ce litere fac parte din cuvant.\n\n"
+            "Esti pregatit? Tasteaza un cuvant de 5 litere:" << endl;
+    
+    int incercari = 0;
+    
+    do
+    {
+        cin >> guess;
+        incercari++;
+
+        if (guess.size() != 5)
+        {
+            cout << "Cuvantul introdus nu are 5 litere!\nIntrodu un alt cuvant:" << endl;
+            continue;
+        }
+
+        bool isValid = true;
+        for (char& c : guess)
+        {
+            if (c >= 'a' && c <= 'z')
+            {
+                c -= 32;
+            }
+            else if (c < 'A' || c > 'Z')
+            {
+                isValid = false;
+                break;
+            }
+        }
+        
+        if (!isValid)
+        {
+            cout << "Cuvantul introdus contine si alte caractere in afara de litere!\nIntrodu un alt cuvant:" << endl;
+            continue;
+        }
+
+        if (dictionary.cuvinte.find(guess) == dictionary.cuvinte.end())
+        {
+            cout << "Cuvantul introdus nu face parte din dictionar!\nIntrodu un alt cuvant:" << endl;
+            continue;
+        }
+
+        int* status = wordle::getPattern(word, guess);
+
+        for(int i=0; i<5; i++)
+        {
+            if (status[i] == VERDE)
+                cout << guess[i] << ": Corect!\n";
+            else if (status[i] == GALBEN)
+                cout << guess[i] << ": Alta pozitie!\n";
+            else
+                cout << guess[i] << ": Nu exista!\n";
+        }
+        
+        int cod_p = encodePattern(status);
+        delete status;
+        
+        cout << "Codul raspunsului: " << cod_p << "\n" << endl;
+
+    } while(guess != word);
+
+    if (incercari == 1)
+        cout << "FELICITARI! Ai ghicit cuvantul in 1 incercare!\n" << endl;
+    else
+        cout << "FELICITARI! Ai ghicit cuvantul in " << incercari << " incercari!\n" << endl;
+}

@@ -1,20 +1,21 @@
-#include "WordleGame.h"
 #include <iostream>
+#include "wordle_game.h"
 
 int main()
 {
     try
     {
-        wordle_dict dict("cuvinte.txt", 11454);
+        word_dict dict("../cuvinte.txt");
         dict.init();
 
-        WordleGame game(dict);
+        wordle_game game(dict);
         game.play();
+        
+        return 0;
     }
     catch(...)
     {
-        std::cerr << "An exception has occured!" << std::endl;
+        std::cerr << "A aparut o eroare." << std::endl;
         return -1;
     }
-    return 0;
 }

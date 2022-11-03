@@ -3,11 +3,9 @@
 #include <functional>
 #include <iostream>
 #include <vector>
-
-#include "../common/pattern.h"
-#include "../common/word_data.h"
 #include "analyzer.h"
-
+#include "../common/word_data.h"
+#include "../common/wordle.h"
 using namespace std;
 
 /* IDEA CORNER:
@@ -38,40 +36,9 @@ void analyzer::run()
 
         for (const string& guess : dictionary.vcuvinte)
         {
-            int litere[26] = {0};
-            int status[5] = {0}; 
-            
-            /* Va fi considerata urmatoarea codare:
-             * status[i] = 0 => litera gri
-             * status[i] = 1 => litera verde
-             * status[i] = 2 => litera galbena 
-             */
-
-            // Pasul 1: Cream vector de frecventa cu numarul aparitiilor fiecarei litere
-            for (const char& c : word)
-                litere[c - 'A']++;
-
-            // Pasul 2: Determinam literele verzi
-            for (int i = 0; i < 5; i++)
-            {
-                if (guess[i] == word[i])
-                {
-                    status[i] = 1;
-                    litere[guess[i] - 'A']--;
-                }
-            }
-            
-            // Pasul 3: Determinam literele galbene
-            for (int i = 0; i < 5; i++)
-            {
-                if (status[i] == 0 && litere[guess[i] - 'A'] > 0)
-                {
-                    status[i] = 2;
-                    litere[guess[i] - 'A']--;
-                }
-            }
-
-            int cod_p = patternToInt(status);
+            int* status = wordle::getPattern(word, guess);
+            int cod_p = encodePattern(status);
+            delete status;
             patterns[cod_p]++;
             possible++;
         }

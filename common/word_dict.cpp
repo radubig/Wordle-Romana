@@ -1,9 +1,11 @@
 #include <fstream>
 #include <iostream>
-#include "wordle_dict.h"
+#include "word_dict.h"
+
 using namespace std;
 
-void wordle_dict::init() {
+void word_dict::init()
+{
     ifstream in(file);
     if(!in.is_open())
     {
@@ -26,7 +28,8 @@ void wordle_dict::init() {
     cout << "Dictionar incarcat." << endl;
 }
 
-void wordle_dict::clear() {
+void word_dict::clear()
+{
     cuvinte.clear();
     vcuvinte.clear();
     file.clear();

@@ -1,6 +1,4 @@
 #include <iostream>
-
-#include "../game/WordleGame.h"
 #include "analyzer.h"
 
 using namespace std;
@@ -12,7 +10,7 @@ int main()
 
     try
     {
-        wordle_dict dict("./cuvinte.txt");
+        word_dict dict("../cuvinte.txt");
         dict.init();
 
         analyzer analyzer(dict);
