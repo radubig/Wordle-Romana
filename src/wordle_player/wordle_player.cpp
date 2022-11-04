@@ -15,23 +15,24 @@ string wordle_player::get_best_guess()
 {
     if (words_list.size() == 1) return words_list[0];
     
-    string best_word;
-
     vector<word_data> ent_cuvinte = entropy::calculate_entropy(dictionary.vcuvinte, words_list);
 
     sort(ent_cuvinte.begin(), ent_cuvinte.end(), [this](const word_data& a, const word_data& b)
     {
-        if (a.entropy < b.entropy) return false;
+        // Daca returnam true, atunci a va fi inainte de b (implementare operator >)
+        
         if (a.entropy > b.entropy) return true;
+        if (a.entropy < b.entropy) return false;
 
-        if (count(words_list.begin(), words_list.end(), a.word)) return true;
-        if (count(words_list.begin(), words_list.end(), b.word)) return false;
+        bool a_in_word_list = count(words_list.begin(), words_list.end(), a.word);
+        bool b_in_word_list = count(words_list.begin(), words_list.end(), b.word);
+        
+        if (a_in_word_list && !b_in_word_list) return true;
+        if (b_in_word_list && !a_in_word_list) return false;
         
         return a.word < b.word;
     });
-    
-    best_word = ent_cuvinte[0].word;
-    
+
     if (dump)
     {
         ofstream out("../entropy_dump.txt");
@@ -41,8 +42,8 @@ string wordle_player::get_best_guess()
         }
         out.close();
     }
-
-    return best_word;
+    
+    return ent_cuvinte[0].word;
 }
 
 bool check_guess(const std::string &guess, int* const& pattern, const std::string &word)
