@@ -12,7 +12,8 @@ private:
     bool dump;
 
 public:
-    explicit wordle_player(const word_dict& dict, bool dump = false) : dictionary(dict), dump(dump) { }
+    explicit wordle_player(const word_dict& dict, bool dump = false)
+        : dictionary(dict), dump(dump) { }
 
     std::vector<std::string> words_list;
 

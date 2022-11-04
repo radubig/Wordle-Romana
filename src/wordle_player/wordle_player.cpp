@@ -57,19 +57,19 @@ bool check_guess(const std::string &guess, int* const& pattern, const std::strin
 
         switch (pattern[i])
         {
-            case GRAY:
+            case patterns::GRAY:
                 // Daca litera este gri atunci cuvantul contine atatea litere cat sunt colorate galben sau verde
                 if (word[i] == guess[i]) return false;
                 max[guess[i] - 'A'] = true;
                 break;
 
-            case GREEN:
+            case patterns::GREEN:
                 // Daca litera este verde atunci cuvantul are acea litera pe acea pozitie
                 if (word[i] != guess[i]) return false;
                 occ[guess[i] - 'A']--;
                 break;
 
-            case YELLOW:
+            case patterns::YELLOW:
                 // Daca litera este galbena atunci cuvantul are acea litera, dar nu pe acea pozitie
                 if (word[i] == guess[i]) return false;
                 occ[guess[i] - 'A']--;
