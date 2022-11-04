@@ -29,13 +29,14 @@ int main()
             game.reset(current_word);
             player.reset();
 
-            string guessed_word = "TARIE";
+            string guessed_word = "TAREI";
             int pattern = game.guess(guessed_word);
             player.apply_guess(guessed_word, pattern);
-/*            cout << "Ghicire: " << guessed_word << " " << pattern << endl;
+            
+            cout << "Ghicire: " << guessed_word << " " << pattern << endl;
             cout << "Cuvinte posibile: ";
             for (const string& possible_word : player.words_list) cout << possible_word << " ";
-            cout << endl;*/
+            cout << endl;
             
             while (pattern != GUESSED_PATTERN)
             {
@@ -43,10 +44,11 @@ int main()
                 guessed_word = player.get_best_guess();
                 pattern = game.guess(guessed_word);
                 player.apply_guess(guessed_word, pattern);
-/*                cout << "Ghicire: " << guessed_word << " " << pattern << endl;
+                
+                cout << "Ghicire: " << guessed_word << " " << pattern << endl;
                 cout << "Cuvinte posibile: ";
                 for (const string& possible_word : player.words_list) cout << possible_word << " ";
-                cout << endl;*/
+                cout << endl;
             }
             
             number_of_guesses[guesses]++;

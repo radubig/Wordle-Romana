@@ -17,12 +17,11 @@ int main()
         int guesses = 1;
         int in_pattern;
 
-        // Conform entropy_list.txt (03.11.2022) cuvantul cu cea mai mare entropie este:
-        // TARIE (6.42526)
-        string guess = "TARIE";
+        // Conform first_guess_entropy.txt (03.11.2022) cuvantul cu cea mai mare entropie este:
+        // TAREI (6.41381)
+        string guess = "TAREI";
 
-        cout << "Ghiceste: TARIE\n"
-                "Introdu codul raspunsului: ";
+        cout << "Ghiceste: " << guess << "\nIntrodu codul raspunsului: ";
         cin >> in_pattern;
         player.apply_guess(guess, in_pattern);
         cout << "Cuvinte posibile: ";

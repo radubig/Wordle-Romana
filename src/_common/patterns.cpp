@@ -39,7 +39,7 @@ int* const& patterns::get_pattern(const std::string &target, const std::string &
     // Pasul 3: Determinam literele galbene
     for (int i = 0; i < 5; i++)
     {
-        if (pattern[i] == 0 && litere[guess[i] - 'A'] > 0)
+        if (pattern[i] == GRAY && litere[guess[i] - 'A'] > 0)
         {
             pattern[i] = YELLOW;
             litere[guess[i] - 'A']--;

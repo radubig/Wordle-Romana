@@ -11,7 +11,7 @@ int main()
         dict.init();
 
         wordle_game game(dict);
-        game.reset("ACCES");
+        game.reset("BERAR");
 
         cout << "Wordle: Incearca sa ghicesti un cuvant de 5 litere!\n"
                 "Vei primi la fiecare incercare indicatii despre ce litere fac parte din cuvant.\n\n"
