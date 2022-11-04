@@ -5,14 +5,9 @@ using namespace std;
 
 vector<word_data> entropies;
 
-void clear_entropy()
+const vector<word_data>& entropy::calculate_entropy(const vector<string> &dictionar, const vector<string> &cuvinteRamase)
 {
     entropies.clear();
-}
-
-vector<word_data> const& entropy::calculate_entropy(const vector<string> &dictionar, const vector<string> &cuvinteRamase)
-{
-    clear_entropy();
     
     for (const string& guess : dictionar)
     {

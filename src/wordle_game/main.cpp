@@ -63,9 +63,9 @@ int main()
 
             for (int i=0; i<5; i++)
             {
-                if (pattern[i] == GREEN)
+                if (pattern[i] == patterns::GREEN)
                     cout << guess[i] << ": Corect!\n";
-                else if (pattern[i] == YELLOW)
+                else if (pattern[i] == patterns::YELLOW)
                     cout << guess[i] << ": Alta pozitie!\n";
                 else
                     cout << guess[i] << ": Nu exista!\n";

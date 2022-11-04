@@ -1,16 +1,20 @@
 #include "patterns.h"
+#include <cstring>
 
-int *pattern = new int[5] {GRAY};
+int pattern[5]{patterns::GRAY};
 
-void clear_pattern()
+inline void clear_pattern()
 {
+    /*
     for (int i = 0; i < 5; i++)
     {
-        pattern[i] = GRAY;
+        pattern[i] = patterns::GRAY;
     }
+     */
+    memset(pattern, 0, sizeof(pattern));
 }
 
-int* const& patterns::get_pattern(const std::string &target, const std::string &guess)
+int* patterns::get_pattern(const std::string &target, const std::string &guess)
 {
     int litere[26] = {0};
 
@@ -51,10 +55,14 @@ int* const& patterns::get_pattern(const std::string &target, const std::string &
 
 int patterns::encode_pattern(const int* status) 
 {
-    return 81 * status[0] + 27 * status[1] + 9 * status[2] + 3 * status[3] + status[4];
+    return 81 * status[0] +
+           27 * status[1] +
+            9 * status[2] +
+            3 * status[3] +
+                status[4];
 }
 
-int* const& patterns::decode_pattern(int cod_p) 
+int* patterns::decode_pattern(int cod_p)
 {
     clear_pattern();
     

@@ -10,7 +10,6 @@ struct word_data
     std::string word;
     double entropy;
 
-//    word_data() = default;
     word_data(const std::string& _word, double _entropy)
     {
         word = _word;
