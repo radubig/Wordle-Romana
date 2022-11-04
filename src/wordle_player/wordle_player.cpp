@@ -35,7 +35,7 @@ string wordle_player::get_best_guess()
 
     if (dump)
     {
-        ofstream out("../entropy_dump.txt");
+        ofstream out("entropy_dump.txt");
         for (const word_data& i : ent_cuvinte)
         {
             out << i.word << " : " << i.entropy << "\n";

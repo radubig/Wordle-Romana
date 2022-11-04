@@ -7,7 +7,7 @@ int main()
 {
     try
     {
-        word_dict dict("../cuvinte.txt");
+        word_dict dict("cuvinte.txt");
         dict.init();
 
         wordle_game game(dict);

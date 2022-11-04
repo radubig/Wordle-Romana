@@ -11,7 +11,7 @@ int main()
 {
     try
     {
-        word_dict dict("../cuvinte.txt");
+        word_dict dict("cuvinte.txt");
         dict.init();
 
         wordle_game game(dict);
@@ -61,7 +61,7 @@ int main()
                 cout << "Cuvantul " << current_word << " a fost ghicit in " << guesses << " incercari. (Media: " << (1.0 * sum / total) << ")" << endl;
         }
         
-        ofstream fout("../stats.txt");
+        ofstream fout("stats.txt");
         for (int i = 1; i < 9; i++)
         {
             if (number_of_guesses[i] == 0 && number_of_guesses[i + 1] == 0) break;

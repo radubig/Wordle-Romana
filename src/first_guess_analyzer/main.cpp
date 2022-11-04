@@ -14,7 +14,7 @@ int main()
 
     try
     {
-        word_dict dict("../cuvinte.txt");
+        word_dict dict("cuvinte.txt");
         dict.init();
 
         cout << "Te rog asteapta..." << endl;
@@ -22,7 +22,7 @@ int main()
         vector<word_data> ent_cuvinte = entropy::calculate_entropy(dict.vcuvinte, dict.vcuvinte);
         sort(ent_cuvinte.begin(), ent_cuvinte.end(), greater<>());
 
-        ofstream out("../first_guess_entropy.txt");
+        ofstream out("first_guess_entropy.txt");
         for (const word_data& i : ent_cuvinte)
         {
             out << i.word << " : " << i.entropy << "\n";
