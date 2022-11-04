@@ -44,6 +44,9 @@ int main()
             cout << "Ghiceste: " << guess << "\nIntrodu codul raspunsului: ";
             cin >> in_pattern;
             player.apply_guess(guess, in_pattern);
+            cout << "Cuvinte posibile: ";
+            for (const string& word : player.words_list) cout << word << " ";
+            cout << endl;
         }
 
         if (guesses == 1)

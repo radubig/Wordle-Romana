@@ -14,11 +14,11 @@ vector<word_data> const& entropy::calculate_entropy(const vector<string> &dictio
 {
     clear_entropy();
     
-    for (const string& word : dictionar)
+    for (const string& guess : dictionar)
     {
         int patterns[NUM_PATTERNS] = {0};
 
-        for (const string& guess : cuvinteRamase)
+        for (const string& word : cuvinteRamase)
         {
             int* status = patterns::get_pattern(word, guess);
             int cod_p = patterns::encode_pattern(status);
@@ -34,7 +34,7 @@ vector<word_data> const& entropy::calculate_entropy(const vector<string> &dictio
             entropy += v;
         }
 
-        entropies.emplace_back(word, entropy);
+        entropies.emplace_back(guess, entropy);
     }
     
     return entropies;

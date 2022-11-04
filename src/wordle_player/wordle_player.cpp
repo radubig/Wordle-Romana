@@ -8,7 +8,7 @@ using namespace std;
 
 void wordle_player::reset()
 {
-    words_list = dictionary.vcuvinte;    
+    words_list = dictionary.vcuvinte;
 }
 
 string wordle_player::get_best_guess()
@@ -18,6 +18,7 @@ string wordle_player::get_best_guess()
     string best_word;
 
     vector<word_data> ent_cuvinte = entropy::calculate_entropy(dictionary.vcuvinte, words_list);
+
     sort(ent_cuvinte.begin(), ent_cuvinte.end(), greater<>());
 
     best_word = ent_cuvinte[0].word;
@@ -35,62 +36,62 @@ string wordle_player::get_best_guess()
     return best_word;
 }
 
-void wordle_player::apply_guess(const std::string &guessed_word, int pattern_code)
+bool check_guess(const std::string &guess, int* const& pattern, const std::string &word)
 {
-    int *status_guess = patterns::decode_pattern(pattern_code);
-    int galbene_guess[26] = {0};
-    int gri_guess[26] = {0};
+    int occ[26] = {0};
+    bool max[26] = {false};
 
     for (int i = 0; i < 5; i++)
     {
-        if (status_guess[i] == YELLOW) galbene_guess[guessed_word[i] - 'A']++;
-        else if (status_guess[i] == GREY) gri_guess[guessed_word[i] - 'A'] = 1;
+        occ[word[i] - 'A']++;
+
+        switch (pattern[i])
+        {
+            case GRAY:
+                // Daca litera este gri atunci cuvantul contine atatea litere cat sunt colorate galben sau verde
+                max[guess[i] - 'A'] = true;
+                break;
+
+            case GREEN:
+                // Daca litera este verde atunci cuvantul are acea litera pe acea pozitie
+                if (word[i] != guess[i]) return false;
+                occ[guess[i] - 'A']--;
+                break;
+
+            case YELLOW:
+                // Daca litera este galbena atunci cuvantul are acea litera, dar nu pe acea pozitie
+                if (word[i] == guess[i]) return false;
+                occ[guess[i] - 'A']--;
+                break;
+        }
     }
 
-    std::vector<string> newlist;
-    for (const string& word : words_list)
+    // Verificam daca cuvantul are destule aparitii ale fiecarei litere pentru a satisface conditiile
+    for (int i = 0; i < 26; ++i)
     {
-        bool goodWord = true;
-        int litere[26] = {0};
-
-        for (int i = 0; i < 5; i++)
+        if (max[i])
         {
-            if (status_guess[i] == GREEN) // Verificare litere verzi
-            {
-                if (word[i] != guessed_word[i])
-                {
-                    goodWord = false;
-                    break;
-                }
-            }
-            else if (word[i] == guessed_word[i]) // Verificare ca literele neverzi sa nu fie pe aceeasi pozitie
-            {
-                goodWord = false;
-                break;
-            }
-            else
-            {
-                litere[word[i] - 'A']++;
-            }
+            if (occ[i] != 0) return false;
         }
-
-        for (int i = 0; i < 26; i++)
+        else
         {
-            if (litere[i] < galbene_guess[i]) // Verificare litere galbene
-            {
-                goodWord = false;
-                break;
-            }
-
-            if (gri_guess[i] == 1 && litere[i] > 0) // Verificare litere gri
-            {
-                goodWord = false;
-                break;
-            }
+            if (occ[i] < 0) return false;
         }
-
-        if (goodWord) newlist.push_back(word);
     }
+    
+    return true;
+}
 
-    words_list = newlist;
+void wordle_player::apply_guess(const std::string &guessed_word, int pattern_code)
+{
+    int *status_guess = patterns::decode_pattern(pattern_code);
+    
+    words_list.erase
+    (
+        remove_if(words_list.begin(), words_list.end(), [guessed_word, status_guess](const string& word) 
+        {
+            return !check_guess(guessed_word, status_guess, word); 
+        }),
+        words_list.end()
+    );
 }

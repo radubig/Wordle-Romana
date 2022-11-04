@@ -19,20 +19,23 @@ int main()
         
         int number_of_guesses[10] = {0};
         int total = 0;
+        int sum = 0;
         
-        for (const string& word : dict.vcuvinte)
+        cout << setprecision(2) << fixed;
+        
+        for (const string& current_word : dict.vcuvinte)
         {
             int guesses = 1;
-            game.reset(word);
+            game.reset(current_word);
             player.reset();
 
             string guessed_word = "TARIE";
             int pattern = game.guess(guessed_word);
             player.apply_guess(guessed_word, pattern);
-            cout << "Ghicire: " << guessed_word << " " << pattern << endl;
+/*            cout << "Ghicire: " << guessed_word << " " << pattern << endl;
             cout << "Cuvinte posibile: ";
-            for (const string& word : player.words_list) cout << word << " ";
-            cout << endl;
+            for (const string& possible_word : player.words_list) cout << possible_word << " ";
+            cout << endl;*/
             
             while (pattern != GUESSED_PATTERN)
             {
@@ -40,19 +43,20 @@ int main()
                 guessed_word = player.get_best_guess();
                 pattern = game.guess(guessed_word);
                 player.apply_guess(guessed_word, pattern);
-                cout << "Ghicire: " << guessed_word << " " << pattern << endl;
+/*                cout << "Ghicire: " << guessed_word << " " << pattern << endl;
                 cout << "Cuvinte posibile: ";
-                for (const string& word : player.words_list) cout << word << " ";
-                cout << endl;
+                for (const string& possible_word : player.words_list) cout << possible_word << " ";
+                cout << endl;*/
             }
             
             number_of_guesses[guesses]++;
             total++;
+            sum += guesses;
             
             if (guesses == 1)
-                cout << "Cuvantul " << word << " a fost ghicit in 1 incercare." << endl;
+                cout << "Cuvantul " << current_word << " a fost ghicit in 1 incercare. (Media: " << (1.0 * sum / total) << ")" << endl;
             else
-                cout << "Cuvantul " << word << " a fost ghicit in " << guesses << " incercari." << endl;
+                cout << "Cuvantul " << current_word << " a fost ghicit in " << guesses << " incercari. (Media: " << (1.0 * sum / total) << ")" << endl;
         }
         
         ofstream fout("../stats.txt");
@@ -60,8 +64,13 @@ int main()
         {
             if (number_of_guesses[i] == 0 && number_of_guesses[i + 1] == 0) break;
             
-            fout << setprecision(0) << i << " INCERCARI: " << number_of_guesses[i] << "/" << total << " (" << setprecision(2) << (number_of_guesses[i] / total * 100) << "%)\n";
+            fout << i;
+            if (i == 1) fout << " INCERCARE: ";
+            else fout << " INCERCARI: ";
+            
+            fout << number_of_guesses[i] << "/" << total << " (" << setprecision(2) << (number_of_guesses[i] / total * 100) << "%)\n";
         }
+        fout << "\nMEDIA: " << (1.0 * sum / total);
         fout.close();
 
         return 0;

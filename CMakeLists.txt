@@ -19,4 +19,4 @@ add_executable(WordlePlayer src/wordle_player/main.cpp ${WordlePlayer} ${_Common
 
 file(GLOB_RECURSE StatisticsGenerator "src/statistics_generator/*")
 list(FILTER StatisticsGenerator EXCLUDE REGEX "src/statistics_generator/main.cpp")
-add_executable(StatisticsGenerator src/statistics_generator/main.cpp ${StatisticsGenerator} ${Game} ${Player} ${_Common})
+add_executable(StatisticsGenerator src/statistics_generator/main.cpp ${StatisticsGenerator} ${WordleGame} ${WordlePlayer} ${_Common})
