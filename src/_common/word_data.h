@@ -17,6 +17,7 @@ struct word_data
         entropy = _entropy;
     }
 
+    // Used in greater<> comparison for sorting
     bool operator >(const word_data& other) const
     {
         return entropy > other.entropy || (entropy == other.entropy && word < other.word);

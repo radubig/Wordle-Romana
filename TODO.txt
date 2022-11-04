@@ -1,1 +1,0 @@
-- Daca mai multe cuvinte impartasesc entropia maxima, sa se aleaga cuvintele din lista posibila de cuvinte prima oara, nu alfabetic

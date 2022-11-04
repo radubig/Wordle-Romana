@@ -19,8 +19,17 @@ string wordle_player::get_best_guess()
 
     vector<word_data> ent_cuvinte = entropy::calculate_entropy(dictionary.vcuvinte, words_list);
 
-    sort(ent_cuvinte.begin(), ent_cuvinte.end(), greater<>());
+    sort(ent_cuvinte.begin(), ent_cuvinte.end(), [this](const word_data& a, const word_data& b)
+    {
+        if (a.entropy < b.entropy) return false;
+        if (a.entropy > b.entropy) return true;
 
+        if (count(words_list.begin(), words_list.end(), a.word)) return true;
+        if (count(words_list.begin(), words_list.end(), b.word)) return false;
+        
+        return a.word < b.word;
+    });
+    
     best_word = ent_cuvinte[0].word;
     
     if (dump)
