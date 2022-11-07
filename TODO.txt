@@ -1,7 +1,20 @@
-* IPC
-* generare solutii.txt conform postarii de pe Teams
-* Chage standard arrays and int* to std::array<int> (its safer + better + L + ratio)
+!!!PENTRU A RULA PROGRAMUL!!!
+1) Alege configuratia preferata (build sau release)
+2) Copiaza fisierele "cuvinte.txt" si "2nd_guesses.txt" in folderul ce contine executabilele
+3) Daca vrei sa rulezi programul direct din CLion si sa se joace automat:
+    -intra in meniul "Run.../Edit configuration..."
+    -Lasa "Working directory" gol in toate executabilele
+    -In executabilul WordlePlayer adauga argumentul "-auto"
+    -Ruleaza programul
+4) Daca vrei sa rulezi programul direct din terminal:
+    -deschide un terminal in folderul ce contine executabilele
+    -ruleaza "./WordlePlayer -auto"
 
-* IDEE: Pentru gasirea celui mai optim prim cuvant este posibil sa fie folositor sa luam in considerare si media ponderata a informatiei pe care ne-ar da-o
-orice posibil 2nd guess pentru fiecare cuvant din dictionar (vezi https://youtu.be/fRed0Xmc2Wg?t=340 ). Este posibil ca acest lucru sa nu scada media de ghicire
-a cuvintelor.
+
+TODO:
+    * IPC
+    * generare solutii.txt conform postarii de pe Teams
+    * Chage standard arrays and int* to std::array<int> (its safer + better + L + ratio)
+    * IDEE: Pentru gasirea celui mai optim prim cuvant este posibil sa fie folositor sa luam in considerare si media ponderata a informatiei pe care ne-ar da-o
+    orice posibil 2nd guess pentru fiecare cuvant din dictionar (vezi https://youtu.be/fRed0Xmc2Wg?t=340 ). Este posibil ca acest lucru sa nu scada media de ghicire
+    a cuvintelor.
