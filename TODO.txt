@@ -1,5 +1,4 @@
 * IPC
-* Pre-cache 2nd guess
 * generare solutii.txt conform postarii de pe Teams
 * Chage standard arrays and int* to std::array<int> (its safer + better + L + ratio)
 
