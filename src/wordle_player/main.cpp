@@ -1,11 +1,13 @@
 #include <iostream>
 #include "wordle_player.h"
 #include "../_common/patterns.h"
+#include "../_common/ipc.h"
 
 using namespace std;
+namespace bp = boost::process;
 
 static void StandardPlay();
-static void AutoPlay();
+static void AutoPlay(vector<string>&, bp::ipstream&, bp::opstream&);
 
 int main(int argc, char** argv)
 {
@@ -17,7 +19,24 @@ int main(int argc, char** argv)
         }
         else
         {
-            AutoPlay();
+            //Command line args:
+            //Player: ./WordlePlayer -auto
+            //calls: ./WordleGame -auto
+            vector<string> data;
+
+            bp::ipstream bufin;
+            bp::opstream bufout;
+            bp::child Child ("WordleGame", "-auto", bp::std_out > bufin, bp::std_in < bufout);
+            AutoPlay(data, bufin, bufout);
+
+            Child.wait();
+            if(Child.exit_code() != 0)
+                cerr << "Child gave up on life" << endl;
+
+            cout << "Cuvinte ghicite:\n";
+            for(const string& i : data)
+                cout << i << "\n";
+            cout << "Cuvantul " << *(data.rbegin()) << " a fost ghicit in " << data.size() << " incercari." << endl;
         }
     }
     catch (...)
@@ -77,7 +96,7 @@ inline static void StandardPlay()
         cout << "Cuvant ghicit in " << guesses << " incercari.\n" << endl;
 }
 
-inline static void AutoPlay()
+inline static void AutoPlay(vector<string>& ans, bp::ipstream& bufin, bp::opstream& bufout)
 {
     word_dict dict("cuvinte.txt");
     dict.init();
@@ -92,7 +111,9 @@ inline static void AutoPlay()
     // TAREI (6.41381)
     string guess = FIRST_GUESS;
 
-    cin >> in_pattern;
+    bufout << guess << endl;
+    ans.push_back(guess);
+    bufin >> in_pattern;
 
     player.apply_guess(guess, in_pattern);
 
@@ -102,13 +123,16 @@ inline static void AutoPlay()
 
         if (player.words_list.size() == 1)
         {
-            cout << "Ghiceste: " << player.words_list[0] << "\n";
+            bufout << player.words_list[0] << endl;
+            ans.push_back(player.words_list[0]);
             return;
         }
 
         guess = player.get_best_guess();
+        bufout << guess << endl;
+        ans.push_back(guess);
 
-        cin >> in_pattern;
+        bufin >> in_pattern;
         player.apply_guess(guess, in_pattern);
     }
 

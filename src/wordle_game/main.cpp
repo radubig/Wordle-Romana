@@ -1,6 +1,7 @@
 #include <iostream>
 #include "wordle_game.h"
 #include "../_common/patterns.h"
+#include "../_common/ipc.h"
 
 using namespace std;
 
@@ -144,8 +145,9 @@ inline static void AutoPlay()
             throw;
 
         guesses++;
-        int* pattern = patterns::decode_pattern(pattern_code);
+        cout << pattern_code << endl;
 
     } while (pattern_code != GUESSED_PATTERN);
+
 
 }

@@ -3,6 +3,13 @@ project(Wordle)
 
 set(CMAKE_CXX_STANDARD 17)
 
+find_package(Boost)
+if(NOT Boost_FOUND)
+    message(ERROR "boost library not found, install with \"sudo apt-get install libboost-all-dev\"")
+endif()
+
+include_directories (${Boost_INCLUDE_DIRS})
+
 file(GLOB_RECURSE _Common "src/_common/*")
 
 file(GLOB_RECURSE FirstGuessAnalyzer "src/first_guess_analyzer/*")

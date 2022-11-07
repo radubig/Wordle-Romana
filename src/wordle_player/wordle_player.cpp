@@ -126,7 +126,7 @@ void wordle_player::apply_guess(const std::string &guessed_word, int pattern_cod
 
 void wordle_player::Load2ndGuessCache()
 {
-    ifstream in("src/_common/2nd_guesses.txt");
+    ifstream in("2nd_guesses.txt");
     if(!in.is_open())
     {
         cerr << "Fatal: 2nd_guesses.txt not found!" << endl;
