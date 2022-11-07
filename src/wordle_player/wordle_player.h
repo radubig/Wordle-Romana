@@ -5,6 +5,8 @@
 
 #include "../_common/word_dict.h"
 
+const std::string FIRST_GUESS = "TAREI";
+
 class wordle_player
 {
 private:
@@ -13,7 +15,10 @@ private:
 
 public:
     explicit wordle_player(const word_dict& dict, bool dump = false)
-        : dictionary(dict), dump(dump) { }
+        : dictionary(dict), dump(dump)
+    {
+        this->reset();
+    }
 
     std::vector<std::string> words_list;
 

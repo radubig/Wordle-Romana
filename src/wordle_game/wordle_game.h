@@ -14,7 +14,10 @@ private:
     std::string target;
 
 public:
-    explicit wordle_game(const word_dict& dict) : dictionary(dict) { }
+    explicit wordle_game(const word_dict& dict) : dictionary(dict)
+    {
+        this->reset();
+    }
     void reset(const std::string& forceWord = "");
     int guess(const std::string& word);
 };

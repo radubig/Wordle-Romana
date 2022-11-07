@@ -96,7 +96,10 @@ bool check_guess(const std::string &guess, int* const& pattern, const std::strin
 void wordle_player::apply_guess(const std::string &guessed_word, int pattern_code)
 {
     int *status_guess = patterns::decode_pattern(pattern_code);
-    
+
+    //Done: Construct another vector and assign it to words_list. push_back() and assignment are way faster than linear search and removal!!!
+
+    /*
     words_list.erase
     (
         remove_if(words_list.begin(), words_list.end(), [guessed_word, status_guess](const string& word) 
@@ -105,4 +108,13 @@ void wordle_player::apply_guess(const std::string &guessed_word, int pattern_cod
         }),
         words_list.end()
     );
+     */
+
+    vector<string> new_list;
+    for(const string& word : words_list)
+    {
+        if(check_guess(guessed_word, status_guess, word))
+            new_list.push_back(word);
+    }
+    words_list = new_list;
 }
