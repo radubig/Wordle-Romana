@@ -14,7 +14,9 @@ void wordle_player::reset()
 string wordle_player::get_best_guess()
 {
     if (words_list.size() == 1) return words_list[0];
-    
+    if (number_of_guesses == 1)
+        return second_guesses[_patterncodecache];
+
     vector<word_data> ent_cuvinte = entropy::calculate_entropy(dictionary.vcuvinte, words_list);
 
     sort(ent_cuvinte.begin(), ent_cuvinte.end(), [this](const word_data& a, const word_data& b)
@@ -117,4 +119,30 @@ void wordle_player::apply_guess(const std::string &guessed_word, int pattern_cod
             new_list.push_back(word);
     }
     words_list = new_list;
+
+    number_of_guesses++;
+    _patterncodecache = pattern_code; //TODO: maybe refactor?
+}
+
+void wordle_player::Load2ndGuessCache()
+{
+    ifstream in("src/_common/2nd_guesses.txt");
+    if(!in.is_open())
+    {
+        cerr << "Fatal: 2nd_guesses.txt not found!" << endl;
+        throw;
+    }
+    while(!in.eof())
+    {
+        string word;
+        in >> word;
+        if(word.size() == 5)
+            second_guesses.push_back(word);
+    }
+    in.close();
+    if(second_guesses.size() != NUM_PATTERNS)
+    {
+        cerr << "Error: Second guesses cache vector size is not 243!" << endl;
+        throw;
+    }
 }
