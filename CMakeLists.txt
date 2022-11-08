@@ -1,7 +1,11 @@
 cmake_minimum_required(VERSION 3.23)
 project(Wordle)
+enable_language(C ASM)
 
+set(CMAKE_CXX_COMPILER g++)
+set(CMAKE_CXX_FLAGS -m32)
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_ASM_FLAGS "${CFLAGS} -x assembler-with-cpp -m32")
 
 find_package(Boost)
 if(NOT Boost_FOUND)
