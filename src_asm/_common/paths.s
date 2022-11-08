@@ -1,5 +1,5 @@
 .data
-    WORD_DICTIONARY_FILE_PATH: .asciz "ddcuvinte.txt"
+    WORD_DICTIONARY_FILE_PATH: .asciz "cuvinte.txt"
 
 .text
 

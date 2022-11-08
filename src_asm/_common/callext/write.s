@@ -42,7 +42,7 @@ _stderr:
     jmp _write
 
 auto_str_len:
-    movl $1, %edx
+    movl $0, %edx
     
     auto_str_len__for1:
         add $1, %edx

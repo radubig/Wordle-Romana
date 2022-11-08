@@ -5,7 +5,6 @@
 .extern get_WORD_DICTIONARY_FILE_PATH
 
 .data
-   intro_str: .asciz "Hello, World!"
 
 .text
 

@@ -11,16 +11,15 @@
 .data
     ERR_ACCESS: .asciz "Nu s-a putut accesa fisierul "
     
-    ERR_GENERIC_1: .asciz "A aparut o eroare la deschiderea fisierului "
-    ERR_GENERIC_2: .asciz "\nCod de eroare: "
+    ERR_GENERIC: .asciz "A aparut o eroare la deschiderea fisierului "
     
     ERR_INVALID_0: .asciz "Numele fisierului "
-    ERR_INVALID_1: .asciz " este invalid"
+    ERR_INVALID_1: .asciz " este invalid\n"
     
     ERR_MISSING_0: .asciz "Fisierul "
-    ERR_MISSING_1: .asciz " nu exista"
+    ERR_MISSING_1: .asciz " nu exista\n"
     
-    err_generic_display: .space 8
+    ERR_END: .asciz "\n"
 .text
 
 .global _open
@@ -34,21 +33,6 @@ _open:
     movl $0, %ecx # O_RDONLY (read only)
     movl $0, %edx # ignored for O_RDONLY
     int $0x80
-
-    cmpl $0, %eax
-    jge _open__if_ERR_GENERIC
-        movl %eax, err_generic_display
-        pushl $err_generic_display
-        pushl $ERR_GENERIC_2
-        pushl %ebx
-        pushl $ERR_GENERIC_1
-        call _stderr
-        call _stderr
-        call _stderr
-        call _stderr
-        
-        call _exit
-    _open__if_ERR_GENERIC:
 
     cmpl $0xfffffffe, %eax # error code 2: ENOENT
     jne _open__if_ERR_MISSING
@@ -64,8 +48,10 @@ _open:
 
     cmpl $0xfffffff3, %eax # error code 13: EACCES
     jne _open__if_ERR_ACCESS
+        pushl $ERR_END
         pushl %ebx
         pushl $ERR_ACCESS
+        call _stderr
         call _stderr
         call _stderr
         
@@ -87,6 +73,18 @@ _open:
         
         call _exit
     _open__if_ERR_INVALID_end:
+    
+    cmpl $0, %eax # any other errors
+    jge _open__if_ERR_GENERIC
+        pushl %ebx
+        pushl $ERR_GENERIC
+        call _stderr
+        call _stderr
+        pushl $ERR_END
+        call _stderr
+        
+        call _exit
+    _open__if_ERR_GENERIC:
 
     popl %edx # rip
     pushl %eax # file_descriptor
