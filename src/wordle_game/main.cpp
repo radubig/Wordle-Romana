@@ -1,8 +1,8 @@
+#include <boost/process.hpp>
 #include <iostream>
 #include "wordle_game.h"
 #include "../_common/paths.h"
 #include "../_common/patterns.h"
-#include "../_common/ipc.h"
 
 using namespace std;
 
