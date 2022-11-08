@@ -9,19 +9,17 @@
 
 ## Introducere
 
-TBA
+_TBA_
+
+## Compilare
+Compilarea se face folosind CMake.
 
 ## Executare
 Proiectul nostru utilizeaza libraria boost pentru a rula [**WordleGame**](#wordlegame) ca un subproces al procesului [**WordlePlayer**](#wordleplayer) pentru a permite comunicarea intre programe.
 
-- Pentru a executa proiectul nostru si a juca in mod automat un joc folosind un cuvant aleatoriu, ruleaza `./cmake-build-release/WordlePlayer -auto`
-- Pentru a executa jocul Wordle in mod traditional folosind consola pentru input si output, ruleaza `./cmake-build-release/WordleGame`
-- Pentru a executa jucatorul Wordle in mod traditional folosind consola pentru input si output, ruleaza `./cmake-build-release/WordlePlayer`
-
-Programele sunt compilate pentru sistemul de operare *Linux Mint 21 x86_64*, versiune kernel *Linux 6.0.0-1006-oem*.
-
-## Compilare
-Compilarea pentru alte sisteme se face folosind CMake.
+- Pentru a executa proiectul nostru si a juca in mod automat un joc folosind un cuvant aleatoriu, ruleaza `./WordlePlayer -auto`
+- Pentru a executa jocul Wordle in mod traditional folosind consola pentru input si output, ruleaza `./WordleGame`
+- Pentru a executa jucatorul Wordle in mod traditional folosind consola pentru input si output, ruleaza `./WordlePlayer`
 
 ## Programe
 

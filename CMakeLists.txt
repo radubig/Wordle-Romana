@@ -1,11 +1,13 @@
 cmake_minimum_required(VERSION 3.23)
 project(Wordle)
-enable_language(C ASM)
+enable_language(CXX ASM)
 
 set(CMAKE_CXX_COMPILER g++)
-set(CMAKE_CXX_FLAGS -m32)
+set(CMAKE_CXX_FLAGS "-m32")
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_ASM_FLAGS "${CFLAGS} -x assembler-with-cpp -m32")
+
+set(CMAKE_ASM_COMPILER gcc)
+set(CMAKE_ASM_FLAGS "-m32 -no-pie -g")
 
 find_package(Boost)
 if(NOT Boost_FOUND)
@@ -36,3 +38,7 @@ file(GLOB_RECURSE StatisticsGenerator "src/statistics_generator/*")
 list(FILTER StatisticsGenerator EXCLUDE REGEX "src/statistics_generator/main.cpp")
 add_executable(StatisticsGenerator src/statistics_generator/main.cpp ${StatisticsGenerator} ${WordleGame} ${WordlePlayer} ${_Common})
 
+file(GLOB_RECURSE ASM__Common "src_asm/_common/*")
+
+file(GLOB_RECURSE ASM_WordleGame "src_asm/wordle_game/*")
+add_executable(ASM_WordleGame ${ASM_WordleGame} ${ASM__Common})
