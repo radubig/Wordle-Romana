@@ -5,13 +5,6 @@
 
 #include <string>
 
-/*
-#define GRAY 0
-#define GREY GRAY // For the british
-#define GREEN 1
-#define YELLOW 2
- */
-
 #define NUM_PATTERNS 243 // 3 ^ 5
 #define GUESSED_PATTERN 121
 
@@ -21,6 +14,7 @@ public:
     enum ptype
     {
         GRAY = 0,
+        GREY = 0, // For the British
         GREEN = 1,
         YELLOW = 2
     };

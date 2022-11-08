@@ -50,6 +50,32 @@ string wordle_player::get_best_guess()
 
 bool check_guess(const std::string &guess, int* const& pattern, const std::string &word)
 {
+    for (int i = 0; i < 5; i++)
+    {
+        switch (pattern[i])
+        {
+            case patterns::GRAY:
+                // Daca litera este gri atunci cuvantul nu contine acea litera
+                if (word.find(guess[i]) != string::npos) return false;
+                break;
+
+            case patterns::GREEN:
+                // Daca litera este verde atunci cuvantul are acea litera pe acea pozitie
+                if (word[i] != guess[i]) return false;
+                break;
+
+            case patterns::YELLOW:
+                // Daca litera este galbena atunci cuvantul are acea litera, dar nu pe acea pozitie
+                if (word[i] == guess[i]) return false;
+                if (word.find(guess[i]) == string::npos) return false;
+                break;
+        }
+    }
+    
+    return true;
+    
+    // Conform precizarilor domnului profesor, folosim logica simpla de verificare a literelor galbene :(
+    /*
     int occ[26] = {0};
     bool max[26] = {false};
 
@@ -93,6 +119,7 @@ bool check_guess(const std::string &guess, int* const& pattern, const std::strin
     }
     
     return true;
+    */
 }
 
 void wordle_player::apply_guess(const std::string &guessed_word, int pattern_code)

@@ -36,7 +36,7 @@ int* patterns::get_pattern(const std::string &target, const std::string &guess)
         if (guess[i] == target[i])
         {
             pattern[i] = GREEN;
-            litere[guess[i] - 'A']--;
+            // litere[guess[i] - 'A']--; // Conform precizarilor domnului profesor, folosim logica simpla de determinare a literelor galbene :(
         }
     }
 
@@ -46,7 +46,7 @@ int* patterns::get_pattern(const std::string &target, const std::string &guess)
         if (pattern[i] == GRAY && litere[guess[i] - 'A'] > 0)
         {
             pattern[i] = YELLOW;
-            litere[guess[i] - 'A']--;
+            // litere[guess[i] - 'A']--; // Conform precizarilor domnului profesor, folosim logica simpla de determinare a literelor galbene :(
         }
     }
     

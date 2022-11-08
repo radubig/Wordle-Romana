@@ -93,7 +93,7 @@ inline static void StandardPlay()
         guesses++;
         int* pattern = patterns::decode_pattern(pattern_code);
 
-        for (int i=0; i<5; i++)
+        for (int i = 0; i < 5; i++)
         {
             if (pattern[i] == patterns::GREEN)
                 cout << guess[i] << ": Corect!\n";
