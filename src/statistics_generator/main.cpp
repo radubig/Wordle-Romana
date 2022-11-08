@@ -83,7 +83,7 @@ int main()
             if (i == 1) fout << " INCERCARE: ";
             else fout << " INCERCARI: ";
 
-            fout << number_of_guesses[i] << "/" << total << " (" << setprecision(2) << (number_of_guesses[i] / total * 100) << "%)\n";
+            fout << number_of_guesses[i] << "/" << total << "\n";
         }
         fout << "\nMEDIA: " << (1.0 * sum / total);
         fout.close();
