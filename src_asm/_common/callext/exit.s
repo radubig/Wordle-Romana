@@ -1,5 +1,9 @@
 .text
 
+# Wrapper around exit syscall
+# Usage:
+#     call _exit
+
 .global _exit
 _exit:
     popl %ecx

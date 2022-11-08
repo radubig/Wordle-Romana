@@ -1,14 +1,17 @@
+.text
+.extern _exit
+.extern _open
+.extern _stdout
+.extern get_WORD_DICTIONARY_FILE_PATH
+
 .data
-    introStr: .asciz "Hello, World!"
+   intro_str: .asciz "Hello, World!"
 
 .text
 
-.extern _write
-.extern _exit
-
 .global main
 main:
-    pushl $introStr
-    call _write
+    call get_WORD_DICTIONARY_FILE_PATH
+    call _open
 
     call _exit

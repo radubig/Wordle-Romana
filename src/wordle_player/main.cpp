@@ -33,7 +33,7 @@ int main(int argc, char** argv)
             Child.wait();
             if (Child.exit_code() != 0)
                 cerr << "A aparut o eroare in subprocesul WorldeGame." << endl;
-
+            
             cout << "Cuvinte ghicite:\n";
             for (const string& i : data)
                 cout << i << "\n";
@@ -51,7 +51,7 @@ int main(int argc, char** argv)
         cerr << "A aparut o eroare neasteptata." << endl;
         return -1;
     }
-
+    
     return 0;
 }
 
