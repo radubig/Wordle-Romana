@@ -1,8 +1,8 @@
-.text
-
 # Wrapper around exit syscall
 # Usage:
 #     call _exit
+
+.text
 
 .global _exit
 _exit:

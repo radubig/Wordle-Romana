@@ -1,5 +1,3 @@
-.text
-
 # Wrapper around write syscall
 # Usage:
 #    pushl [data]
@@ -11,6 +9,13 @@
 # or
 #    pushl [data]
 #    call _stderr
+
+.data
+
+ERR_MSG_1: .asciz "A aparut o eroare la citirea din fisierul "
+ERR_MSG_2: .asciz "\n"
+
+.text
 
 .global _write
 _write:
@@ -24,6 +29,18 @@ _write:
     # %ecx (data) is popped from stack
     call auto_str_len # data_len
     int $0x80
+    
+    cmpl $0, %eax # catch error
+    jge _write__if_ERR
+        pushl %ebx
+        pushl $ERR_MSG_1
+        call _stderr
+        call _stderr
+        pushl $ERR_MSG_2
+        call _stderr
+        
+        call _exit
+    _write__if_ERR:
     
     ret
 
