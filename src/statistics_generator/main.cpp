@@ -24,8 +24,12 @@ int main()
 
         cout << setprecision(2) << fixed;
 
+        ofstream solutii(SOLVE_FILE_PATH);
+        
         for (const string& current_word : dict.vcuvinte)
         {
+            solutii << current_word << ": ";
+            
             int guesses = 1;
             game.reset(current_word);
             player.reset();
@@ -33,6 +37,8 @@ int main()
             string guessed_word = FIRST_GUESS;
             int pattern = game.guess(guessed_word);
             player.apply_guess(guessed_word, pattern);
+            
+            solutii << guessed_word;
 
 /*            cout << "Ghicire: " << guessed_word << " " << pattern << endl;
             cout << "Cuvinte posibile: ";
@@ -45,6 +51,8 @@ int main()
                 guessed_word = player.get_best_guess();
                 pattern = game.guess(guessed_word);
                 player.apply_guess(guessed_word, pattern);
+                
+                solutii << ", " << guessed_word;
 
 /*                cout << "Ghicire: " << guessed_word << " " << pattern << endl;
                 cout << "Cuvinte posibile: ";
@@ -55,6 +63,8 @@ int main()
             number_of_guesses[guesses]++;
             total++;
             sum += guesses;
+            
+            solutii << "\n";
 
             if (guesses == 1)
                 cout << "Cuvantul " << current_word << " a fost ghicit in 1 incercare. (Media: " << (1.0 * sum / total) << ")" << endl;
@@ -62,6 +72,8 @@ int main()
                 cout << "Cuvantul " << current_word << " a fost ghicit in " << guesses << " incercari. (Media: " << (1.0 * sum / total) << ")" << endl;
         }
 
+        solutii.close();
+        
         ofstream fout(STATS_FILE_PATH);
         for (int i = 1; i < 9; i++)
         {
