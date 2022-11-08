@@ -1,5 +1,6 @@
 #include <iostream>
 #include "wordle_player.h"
+#include "../_common/paths.h"
 #include "../_common/patterns.h"
 #include "../_common/ipc.h"
 
@@ -30,18 +31,24 @@ int main(int argc, char** argv)
             AutoPlay(data, bufin, bufout);
 
             Child.wait();
-            if(Child.exit_code() != 0)
-                cerr << "Child gave up on life" << endl;
+            if (Child.exit_code() != 0)
+                cerr << "A aparut o eroare in subprocesul WorldeGame." << endl;
 
             cout << "Cuvinte ghicite:\n";
-            for(const string& i : data)
+            for (const string& i : data)
                 cout << i << "\n";
             cout << "Cuvantul " << *(data.rbegin()) << " a fost ghicit in " << data.size() << " incercari." << endl;
         }
     }
-    catch (...)
+    catch (const runtime_error& e)
     {
         cerr << "A aparut o eroare." << endl;
+        cerr << e.what();
+        return -1;
+    }
+    catch (...)
+    {
+        cerr << "A aparut o eroare neasteptata." << endl;
         return -1;
     }
 
@@ -50,17 +57,14 @@ int main(int argc, char** argv)
 
 inline static void StandardPlay()
 {
-    word_dict dict("cuvinte.txt");
+    word_dict dict(WORD_DICTIONARY_FILE_PATH);
     dict.init();
 
     wordle_player player(dict);
-    //player.reset();
 
     int guesses = 1;
     int in_pattern;
 
-    // Conform first_guess_entropy.txt (03.11.2022) cuvantul cu cea mai mare entropie este:
-    // TAREI (6.41381)
     string guess = FIRST_GUESS;
 
     cout << "Ghiceste: " << guess << "\nIntrodu codul raspunsului: ";
@@ -98,17 +102,14 @@ inline static void StandardPlay()
 
 inline static void AutoPlay(vector<string>& ans, bp::ipstream& bufin, bp::opstream& bufout)
 {
-    word_dict dict("cuvinte.txt");
+    word_dict dict(WORD_DICTIONARY_FILE_PATH);
     dict.init();
 
     wordle_player player(dict);
-    //player.reset();
 
     int guesses = 1;
     int in_pattern;
-
-    // Conform first_guess_entropy.txt (03.11.2022) cuvantul cu cea mai mare entropie este:
-    // TAREI (6.41381)
+    
     string guess = FIRST_GUESS;
 
     bufout << guess << endl;

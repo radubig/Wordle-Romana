@@ -3,6 +3,7 @@
 #include <iostream>
 #include "wordle_player.h"
 #include "../_common/entropy.h"
+#include "../_common/paths.h"
 #include "../_common/patterns.h"
 using namespace std;
 
@@ -14,8 +15,7 @@ void wordle_player::reset()
 string wordle_player::get_best_guess()
 {
     if (words_list.size() == 1) return words_list[0];
-    if (number_of_guesses == 1)
-        return second_guesses[_patterncodecache];
+    if (number_of_guesses == 1 && !second_guesses.empty()) return second_guesses[_patterncodecache];
 
     vector<word_data> ent_cuvinte = entropy::calculate_entropy(dictionary.vcuvinte, words_list);
 
@@ -37,7 +37,7 @@ string wordle_player::get_best_guess()
 
     if (dump)
     {
-        ofstream out("entropy_dump.txt");
+        ofstream out(ENTROPY_DUMP_FILE_PATH);
         for (const word_data& i : ent_cuvinte)
         {
             out << i.word << " : " << i.entropy << "\n";
@@ -124,15 +124,13 @@ void wordle_player::apply_guess(const std::string &guessed_word, int pattern_cod
     _patterncodecache = pattern_code; //TODO: maybe refactor?
 }
 
-void wordle_player::Load2ndGuessCache()
+void wordle_player::load_second_guess_cache()
 {
-    ifstream in("2nd_guesses.txt");
-    if(!in.is_open())
-    {
-        cerr << "Fatal: 2nd_guesses.txt not found!" << endl;
-        throw;
-    }
-    while(!in.eof())
+    ifstream in(SECOND_GUESS_FILE_PATH);
+    if (!in.is_open())
+        throw runtime_error("Fisierul " + SECOND_GUESS_FILE_PATH + " nu a putut fi deschis!");
+    
+    while (!in.eof())
     {
         string word;
         in >> word;
@@ -140,9 +138,7 @@ void wordle_player::Load2ndGuessCache()
             second_guesses.push_back(word);
     }
     in.close();
-    if(second_guesses.size() != NUM_PATTERNS)
-    {
-        cerr << "Error: Second guesses cache vector size is not 243!" << endl;
-        throw;
-    }
+    
+    if (second_guesses.size() != NUM_PATTERNS)
+        throw runtime_error("Fisierul " + SECOND_GUESS_FILE_PATH + " nu contine exact 243 de linii!");
 }

@@ -1,5 +1,6 @@
 #include <iostream>
 #include "wordle_game.h"
+#include "../_common/paths.h"
 #include "../_common/patterns.h"
 #include "../_common/ipc.h"
 
@@ -12,7 +13,7 @@ int main(int argc, char** argv)
 {
     try
     {
-        if(argc < 2)
+        if (argc < 2)
         {
             StandardPlay();
         }
@@ -21,9 +22,15 @@ int main(int argc, char** argv)
             AutoPlay();
         }
     }
+    catch (const runtime_error& e)
+    {
+        cerr << "A aparut o eroare." << endl;
+        cerr << e.what();
+        return -1;
+    }
     catch (...)
     {
-        cout << "A aparut o eroare." << std::endl;
+        cerr << "A aparut o eroare neasteptata." << endl;
         return -1;
     }
 
@@ -32,7 +39,7 @@ int main(int argc, char** argv)
 
 inline static void StandardPlay()
 {
-    word_dict dict("cuvinte.txt");
+    word_dict dict(WORD_DICTIONARY_FILE_PATH);
     dict.init();
 
     wordle_game game(dict);
@@ -106,9 +113,10 @@ inline static void StandardPlay()
         cout << "FELICITARI! Ai ghicit cuvantul in " << guesses << " incercari!\n" << endl;
 
 }
+
 inline static void AutoPlay()
 {
-    word_dict dict("cuvinte.txt");
+    word_dict dict(WORD_DICTIONARY_FILE_PATH);
     dict.init();
 
     wordle_game game(dict);
@@ -122,7 +130,7 @@ inline static void AutoPlay()
         cin >> guess;
 
         if (guess.size() != 5)
-            throw;
+            throw runtime_error("Cuvantul ghicit " + guess + " nu are 5 litere!");
 
         bool isValid = true;
         for (char& c : guess)
@@ -138,11 +146,11 @@ inline static void AutoPlay()
             }
         }
         if (!isValid)
-            throw;
+            throw runtime_error("Cuvantul ghicit " + guess + " este invalid!");
 
         pattern_code = game.guess(guess);
         if (pattern_code == -1)
-            throw;
+            throw runtime_error("Cuvantul ghicit " + guess + " nu este in dictionar!");
 
         guesses++;
         cout << pattern_code << endl;

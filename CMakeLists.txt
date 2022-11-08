@@ -8,13 +8,9 @@ if(NOT Boost_FOUND)
     message(ERROR "boost library not found, install with \"sudo apt-get install libboost-all-dev\"")
 endif()
 
-include_directories (${Boost_INCLUDE_DIRS})
+include_directories(${Boost_INCLUDE_DIRS})
 
 file(GLOB_RECURSE _Common "src/_common/*")
-
-file(GLOB_RECURSE FirstGuessAnalyzer "src/first_guess_analyzer/*")
-list(FILTER FirstGuessAnalyzer EXCLUDE REGEX "src/first_guess_analyzer/main.cpp")
-add_executable(FirstGuessAnalyzer src/first_guess_analyzer/main.cpp ${FirstGuessAnalyzer} ${_Common})
 
 file(GLOB_RECURSE WordleGame "src/wordle_game/*")
 list(FILTER WordleGame EXCLUDE REGEX "src/wordle_game/main.cpp")
@@ -24,6 +20,15 @@ file(GLOB_RECURSE WordlePlayer "src/wordle_player/*")
 list(FILTER WordlePlayer EXCLUDE REGEX "src/wordle_player/main.cpp")
 add_executable(WordlePlayer src/wordle_player/main.cpp ${WordlePlayer} ${_Common})
 
+file(GLOB_RECURSE FirstGuessAnalyzer "src/first_guess_analyzer/*")
+list(FILTER FirstGuessAnalyzer EXCLUDE REGEX "src/first_guess_analyzer/main.cpp")
+add_executable(FirstGuessAnalyzer src/first_guess_analyzer/main.cpp ${FirstGuessAnalyzer} ${_Common})
+
+file(GLOB_RECURSE SecondGuessAnalyzer "src/second_guess_analyzer/*")
+list(FILTER SecondGuessAnalyzer EXCLUDE REGEX "src/second_guess_analyzer/main.cpp")
+add_executable(SecondGuessAnalyzer src/second_guess_analyzer/main.cpp ${SecondGuessAnalyzer} ${WordlePlayer} ${_Common})
+
 file(GLOB_RECURSE StatisticsGenerator "src/statistics_generator/*")
 list(FILTER StatisticsGenerator EXCLUDE REGEX "src/statistics_generator/main.cpp")
 add_executable(StatisticsGenerator src/statistics_generator/main.cpp ${StatisticsGenerator} ${WordleGame} ${WordlePlayer} ${_Common})
+

@@ -5,6 +5,8 @@
 
 #include "../_common/word_dict.h"
 
+// Conform FirstGuessAnalyzer (08.11.2022) cuvantul cu cea mai mare entropie este:
+// TAREI (6.41381)
 const std::string FIRST_GUESS = "TAREI";
 
 class wordle_player
@@ -17,17 +19,17 @@ private:
     int _patterncodecache = -1;
 
 public:
-    explicit wordle_player(const word_dict& dict, bool dump = false)
+    explicit wordle_player(const word_dict& dict, bool dump = false, bool use_second_guess_cache = true)
         : dictionary(dict), dump(dump)
     {
         number_of_guesses = 0;
-        this->Load2ndGuessCache();
+        if (use_second_guess_cache) this->load_second_guess_cache();
         this->reset();
     }
 
     std::vector<std::string> words_list;
 
-    void Load2ndGuessCache();
+    void load_second_guess_cache();
     void reset();
     std::string get_best_guess();
     void apply_guess(const std::string& word, int pattern_code);
