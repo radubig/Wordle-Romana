@@ -11,9 +11,8 @@
 #    call _stderr
 
 .data
-
-ERR_MSG_1: .asciz "A aparut o eroare la citirea din fisierul "
-ERR_MSG_2: .asciz "\n"
+    ERR_MSG_1: .asciz "A aparut o eroare la citirea din fisierul "
+    ERR_MSG_2: .asciz "\n"
 
 .text
 
