@@ -1,42 +1,42 @@
 # Description
 #    Writes data to a file descriptor.
 # Usage:
-#    pushl *[data]
 #    pushl [file_descriptor]
+#    pushl *[data]
 #    call _write
 .data
     ERR_MSG: .asciz "A aparut o eroare la scrierea in fisier"
     
-    rip: .space 4
-    r_data: .space 4
-    r_fd: .space 4
-    r_length: .space 4
+    _rip: .space 4
+    p_fd: .space 4
+    p_data: .space 4
+    l_length: .space 4
 .text
 .global _write
 _write:
     # Function header
-    popl rip
-    popl r_fd
-    popl r_data
+    popl _rip
+    popl p_data
+    popl p_fd
 
     # Calculate data length
-    pushl r_data
+    pushl p_data
     call string__length
-    popl r_length
+    popl l_length
 
     ## Begin register block: %eax, %ebx, %ecx, %edx
-        pushal    
+        pushal
         movl $4, %eax # syscall 4: write
-        movl r_fd, %ebx # file_descriptor
-        movl r_data, %ecx # data
-        movl r_length, %edx # length
+        movl p_fd, %ebx # file_descriptor
+        movl p_data, %ecx # data
+        movl l_length, %edx # length
         int $0x80
-        movl %eax, r_length
+        movl %eax, l_length
         popal
     ## End register block
     
     # Catch and throw any errors
-    cmpl $0, r_length
+    cmpl $0, l_length
     jge _write__if_ERR
         pushl $ERR_MSG
         call _stderr
@@ -44,7 +44,7 @@ _write:
     _write__if_ERR:
     
     # Function footer
-    pushl rip
+    pushl _rip
     ret
 
 # Description
@@ -53,22 +53,22 @@ _write:
 #    pushl *[data]
 #    call _stdout
 .data
-    rip_2: .space 4
-    r_data_2: .space 4
+    _rip_2: .space 4
+    p_data_2: .space 4
 .text
 .global _stdout
 _stdout:
     # Function header
-    popl rip_2
-    popl r_data_2
+    popl _rip_2
+    popl p_data_2
 
     # Call _write function with stdout as file_descriptor parameter
-    pushl r_data_2
     pushl $1 # stdout
+    pushl p_data_2
     call _write
 
     # Function footer    
-    pushl rip_2
+    pushl _rip_2
     ret
 
 # Description
@@ -77,20 +77,20 @@ _stdout:
 #    pushl *[data]
 #    call _stderr
 .data
-    rip_3: .space 4
-    r_data_3: .space 4
+    _rip_3: .space 4
+    p_data_3: .space 4
 .text
 .global _stderr
 _stderr:
     # Function header
-    popl rip_3
-    popl r_data_3
+    popl _rip_3
+    popl p_data_3
 
     # Call _write function with stderr as file_descriptor parameter
-    pushl r_data_3
     pushl $2 # stderr
+    pushl p_data_3
     call _write
 
     # Function footer    
-    pushl rip_3
+    pushl _rip_3
     ret

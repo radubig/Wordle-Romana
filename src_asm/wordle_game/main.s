@@ -1,7 +1,6 @@
 .data
     INTRO_TEXT: .asciz "Wordle: Incearca sa ghicesti un cuvant de 5 litere!\nVei primi la fiecare incercare indicatii despre ce litere fac parte din cuvant.\n\nEsti pregatit? Tasteaza un cuvant de 5 litere:\n";
     NOT_5_CHARS: .asciz "Cuvantul introdus nu are 5 litere!\nIntrodu un alt cuvant:\n"
-    
     A_LOWER: .ascii "a"
     Z_LOWER: .ascii "z"
     
@@ -9,16 +8,16 @@
     guesses: .long 0
     guess: .space 10
 .text
-
 .global main
 main:
-    # initialize the dictionary and the game
+    # Initialize the dictionary and the game
     call wordle_dict__init
     call wordle_game__reset
 
     pushl $INTRO_TEXT
     call _stdout
     
+    # TODO: Add some kinda loop here
         # read the guess
         pushl $guess
         pushl $7

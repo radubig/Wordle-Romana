@@ -1,27 +1,40 @@
 .data
-    ERR_NO_DICT: .asciz "Dictionarul nu a fost initializat inainte de resetarea jocului"
     target_word_index: .space 4
-.text
 
 # Description:
 #     Resets the wordle game and picks a new random word.
 # Usage:
 #     call wordle_game__reset
+.data
+    l_rnd: .space 4
+.text
 .global wordle_game__reset
 wordle_game__reset:
+    # Throw error if dictionary is not initialized
     call throw_err_if_no_dict
 
-    # get random dictionary index
+    # Get random dictionary index
     call _getrandom
-    popl %eax
-    cdq # expand %eax -> %edx:%eax
-    mov wordle_dict__size, %ecx
-    idiv %ecx
-    mov %edx, %ecx # get absolute value
-    neg %edx
-    cmovl %ecx, %edx
-    mov %edx, target_word_index
+    popl l_rnd
     
+    ## Begin register block
+        pushal
+        movl l_rnd, %eax
+        movl word_dict__size, %ecx
+        
+        cdq # expand %eax -> %edx:%eax
+        idiv %ecx
+        
+        mov %edx, target_word_index
+        popal
+    ## End register block
+    
+    # Make index positive if it's less than 0
+    pushl target_word_index
+    call math__abs
+    popl target_word_index
+    
+    # Function footer
     ret
 
 # Description:
@@ -29,10 +42,39 @@ wordle_game__reset:
 # Usage:
 #     pushl [forced_word_index]
 #     call wordle_game__reset_forced_word
+.data
+    ERR_MSG: .asciz "Indexul specificat este in afara dictionarului"
+
+    _rip: .space 4
+    p_fwordidx: .space 4
+.text
 .global wordle_game__reset_forced_word
 wordle_game__reset_forced_word:
+    # Function header
+    popl _rip
+    popl p_fwordidx
+    
+    # Throw error if dictionary is not initialized
     call throw_err_if_no_dict
-    popl target_word_index
+    
+    ## Begin register block: %eax
+        pushal
+        movl p_fwordidx, %eax
+
+        # Throw error if index is outside of dictionary
+        cmpl word_dict__size, %eax
+        jae wordle_game__reset_forced_word__if_outside
+            pushl $ERR_MSG
+            call _stderr
+            call _exit
+        wordle_game__reset_forced_word__if_outside:
+    
+        mov %eax, target_word_index
+        popal
+    ## End register block
+    
+    # Function footer
+    pushl _rip
     ret
 
 # Description:
@@ -40,33 +82,59 @@ wordle_game__reset_forced_word:
 # Usage:
 #     call wordle_game__get_target
 #     popl *[target_word]
+.data
+    _rip_2: .space 4
+    r_word: .space 4
+.text
 .global wordle_game__get_target
 wordle_game__get_target:
-    # load dictionary pointer and offset by target word index
-    movl $wordle_dict__dictionary, %eax
-    movl target_word_index, %ecx
-    mov $6, %edx
-    wordle_game__get_target_forr:
-        addl %ecx, %eax
-        sub $1, %edx
-        cmpl $0, %edx
-        ja wordle_game__get_target_forr
+    # Function header
+    popl _rip_2
 
-    popl %edx
-    pushl %eax
-    pushl %edx
+    ## Begin register block: %eax, %ecx, %edx
+        pushal
+        movl $word_dict__list, %eax
+        movl target_word_index, %ecx
+        movl $6, %edx
+
+        # Return pointer offset by target word index
+        wordle_game__get_target_forr:
+            addl %ecx, %eax
+            sub $1, %edx
+            cmpl $0, %edx
+            ja wordle_game__get_target_forr
+
+        movl %eax, r_word
+        popal
+    ## End register block
+
+    # Function footer
+    pushl r_word
+    pushl _rip_2
     ret
 
+
+# Description:
+#     Throws an error if the dictionary has not been intialized.
+# Usage:
+#     call throw_err_if_no_dict
+.data
+    ERR_NO_DICT: .asciz "Dictionarul nu a fost initializat inainte de resetarea jocului"
+.text
 throw_err_if_no_dict:
-    # throw error if dictionary is not initialized
-    movl wordle_dict__size, %eax
-    movl $0, %ebx
-    cmpl %ebx, %eax
-    ja throw_err_if_no_dict__if
-        pushl $ERR_NO_DICT
-        call _stderr
-        
-        call _exit
-    throw_err_if_no_dict__if:
+    ## Begin register block: %eax
+        pushal
+        movl word_dict__size, %eax
     
+        cmpl $0, %eax
+        ja throw_err_if_no_dict__if
+            pushl $ERR_NO_DICT
+            call _stderr
+            call _exit
+        throw_err_if_no_dict__if:
+    
+        popal
+    ## End register block
+    
+    # Function footer
     ret
