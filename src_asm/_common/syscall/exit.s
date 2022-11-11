@@ -1,9 +1,8 @@
-.text
-
 # Description:
 #     Exists the program.
 # Usage:
 #     call _exit
+.text
 .global _exit
 _exit:
     movl $1, %eax # syscall 1: exit

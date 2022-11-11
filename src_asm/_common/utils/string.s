@@ -14,23 +14,42 @@
 #     pushl [max_length]
 #     call string__length_with_max
 #     popl [length]
+.data
+    rip: .space 4
+    r_string: .space 4
+    r_maxlength: .space 4
+    r_length: .long 0
+.text
 .global string__length_with_max
 string__length_with_max:
+    # Function header
+    popl rip
+    popl r_maxlength
+    popl r_string
+
     popl %eax # rip
     popl %ebx # max_length
     popl %ecx # string
     
-    movl $0, %edx
-    string__length__loop:
-        add $1, %edx
-        cmpl %ebx, %edx
-        jae string__length__loop_end
-        cmpb $0, (%ecx, %edx, 1)
-        jne string__length__loop
-    string__length__loop_end:
+    ## Begin register block: %eax, %ebx, %ecx
+        pushal
+        movl r_length, %eax
+        movl r_maxlength, %ebx
+        movl r_string, %ecx
+        string__length__loop:
+            addl $1, %eax
+            cmpl r_maxlength, %eax
+            jae string__length__loop_end
+            cmpb $0, (%ecx, %eax, 1)
+            jne string__length__loop
+        string__length__loop_end:
+        movl %eax, r_length
+        popal
+    ## End register block
 
-    pushl %edx # length
-    pushl %eax
+    # Function footer
+    pushl r_length
+    pushl rip
     ret
 
 # Description:
