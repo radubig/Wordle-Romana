@@ -1,15 +1,16 @@
-# Wrapper around open syscall
-# Usage:
-#    pushl [file_name]
-#    call _open
-#    popl [file_descriptor]
-
 .data
     ERR_MSG_1: .asciz "A aparut o eroare la deschiderea fisierului "
     ERR_MSG_2: .asciz "\n"
 
+    rip: .space 4
 .text
 
+# Description:
+#    Opens a file.
+# Usage:
+#    pushl *[file_name]
+#    call _open
+#    popl [file_descriptor]
 .global _open
 _open:
     popl %edx # rip

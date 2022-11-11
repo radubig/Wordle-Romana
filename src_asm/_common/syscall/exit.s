@@ -1,9 +1,9 @@
-# Wrapper around exit syscall
-# Usage:
-#     call _exit
-
 .text
 
+# Description:
+#     Exists the program.
+# Usage:
+#     call _exit
 .global _exit
 _exit:
     movl $1, %eax # syscall 1: exit
