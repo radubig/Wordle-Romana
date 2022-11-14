@@ -1,4 +1,50 @@
 # Description:
+#     Converts the string into uppercase (in-place)
+# Usage:
+#     pushl *[string]
+#     call string__to_upper
+.data
+    A_LOWER: .ascii "a"
+    Z_LOWER: .ascii "z"
+    
+    _rip_4: .space 4
+    p_string_4: .space 4
+.text
+.global string__to_upper
+string__to_upper:
+    # Function header
+    popl _rip_4
+    popl p_string_4
+    
+    ## Begin register block: %eax, %ebx, %ecx
+        pushal
+        movl $0, %eax
+        movl p_string_4, %ebx
+    
+        string__to_upper__for_char:
+            movb (%ebx, %eax, 1), %cl
+            
+            cmpb A_LOWER, %cl
+            jb string__to_upper__if_char_not_lower
+            cmpb Z_LOWER, %cl
+            ja string__to_upper__if_char_not_lower
+                subb $32, %cl
+            string__to_upper__if_char_not_lower:
+            
+            movb %cl, (%ebx, %eax, 1)
+            
+            addl $1, %eax
+            cmp $5, %eax
+            jb string__to_upper__for_char
+        
+        popal
+    ## End register block
+    
+    # Function footer
+    pushl _rip_4
+    ret
+
+# Description:
 #     Calculates and returns the length of a string, up to the specified maximum length.
 #     This function uses the null terminator to find the end of the string.
 #     The null terminator is included in the returned length.
@@ -23,7 +69,7 @@ string__length_with_max:
 
     ## Begin register block: %eax, %ebx, %ecx
         pushal
-        movl r_length, %eax
+        movl $0, %eax
         movl p_maxlength, %ebx
         movl p_string, %ecx
         
@@ -111,13 +157,13 @@ string__length_with_trim:
         movl r_length_3, %ecx
         
         string__length_with_trim__forr:
-            cmpb %ah, (%ebx, %ecx, 1)
+            cmpb %ah, -1(%ebx, %ecx, 1)
             jae string__length_with_trim__good_char_1
                 subl $1, %ecx
                 jmp string__length_with_trim__forr
             string__length_with_trim__good_char_1:
         
-            cmpb %al, (%ebx, %ecx, 1)
+            cmpb %al, -1(%ebx, %ecx, 1)
             jbe string__length_with_trim__good_char_2
                 subl $1, %ecx
                 jmp string__length_with_trim__forr
