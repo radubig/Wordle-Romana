@@ -22,7 +22,7 @@ int main()
     catch (const runtime_error& e)
     {
         cerr << "A aparut o eroare." << endl;
-        cerr << e.what();
+        cerr << e.what() << endl;
         return -1;
     }
     catch (...)
