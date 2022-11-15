@@ -25,11 +25,13 @@ main:
         call _stdin
         popl %eax # discard
 
-        # Display an error if guess is not 5 characters        
+        # Calculate length of guess    
         pushl $l_guess
         pushl $10
         call string__length_with_trim
         popl l_inputlen
+        
+        # Throw an error if guess is not 5 characters
         cmpl $5, l_inputlen
         je main__if_guess_size
             pushl $NOT_5_CHARS
@@ -39,6 +41,8 @@ main:
         # Make guess uppercase
         pushl $l_guess
         call string__to_upper
+        
+        # TODO: Check if guess contains invalid characters
         
         test:
 

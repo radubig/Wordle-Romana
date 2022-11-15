@@ -41,3 +41,53 @@ wordle_dict__init:
     ## End register block
     
     ret
+
+# Description:
+#     Throws an error if the dictionary has not been intialized.
+# Usage:
+#     call word_dict__throw_if_uninitialized
+.data
+    ERR_NO_DICT: .asciz "Dictionarul nu a fost initializat"
+.text
+.global word_dict__throw_if_uninitialized
+word_dict__throw_if_uninitialized:
+    ## Begin register block: %eax
+        pushal
+        movl word_dict__size, %eax
+    
+        cmpl $0, %eax
+        ja throw_err_if_no_dict__if
+            pushl $ERR_NO_DICT
+            call _stderr
+            call _exit
+        throw_err_if_no_dict__if:
+    
+        popal
+    ## End register block
+    
+    # Function footer
+    ret
+
+# Description:
+#     Check if the given word is in the dictionary.
+# Usage:
+#     pushl *[word]
+#     call word_dict__check
+#     popl [result]
+.data
+    _rip: .space 4
+    p_word: .space 4
+    r_result: .space 4
+.text
+.global word_dict__check
+word_dict__check:
+    # Function header
+    popl _rip
+    popl p_word
+    
+    
+    
+    # Function footer
+    pushl r_result
+    pushl _rip
+    ret

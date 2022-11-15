@@ -11,7 +11,7 @@
 .global wordle_game__reset
 wordle_game__reset:
     # Throw error if dictionary is not initialized
-    call throw_err_if_no_dict
+    call word_dict__throw_if_uninitialized
 
     # Get random dictionary index
     call _getrandom
@@ -55,7 +55,7 @@ wordle_game__reset_forced_word:
     popl p_fwordidx
     
     # Throw error if dictionary is not initialized
-    call throw_err_if_no_dict
+    call word_dict__throw_if_uninitialized
     
     ## Begin register block: %eax
         pushal
@@ -90,6 +90,9 @@ wordle_game__reset_forced_word:
 wordle_game__get_target:
     # Function header
     popl _rip_2
+    
+    # Throw error if dictionary is not initialized
+    call word_dict__throw_if_uninitialized
 
     ## Begin register block: %eax, %ecx, %edx
         pushal
@@ -113,28 +116,24 @@ wordle_game__get_target:
     pushl _rip_2
     ret
 
-
 # Description:
-#     Throws an error if the dictionary has not been intialized.
+#     Applies a guess on the target word and returns the resulting pattern.
 # Usage:
-#     call throw_err_if_no_dict
+#     pushl *[guess]
+#     call wordle_game__guess
+#     popl [pattern]
 .data
-    ERR_NO_DICT: .asciz "Dictionarul nu a fost initializat inainte de resetarea jocului"
+    _rip_3: .space 4
+    p_guess_3: .space 4
 .text
-throw_err_if_no_dict:
-    ## Begin register block: %eax
-        pushal
-        movl word_dict__size, %eax
+.global wordle_game__guess
+wordle_game_guess:
+    # Function header
+    popl _rip_3
+    popl p_guess_3
     
-        cmpl $0, %eax
-        ja throw_err_if_no_dict__if
-            pushl $ERR_NO_DICT
-            call _stderr
-            call _exit
-        throw_err_if_no_dict__if:
     
-        popal
-    ## End register block
     
     # Function footer
+    pushl _rip_3
     ret
