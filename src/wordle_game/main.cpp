@@ -7,7 +7,12 @@
 using namespace std;
 
 static void StandardPlay();
-static void AutoPlay();
+static void AutoPlay(int n);
+
+#define YELLOW_TEXT "\033[93m"
+#define GREEN_TEXT "\033[92m"
+#define GRAY_TEXT "\033[37m"
+#define RESET_TEXT "\033[0m"
 
 int main(int argc, char** argv)
 {
@@ -19,13 +24,24 @@ int main(int argc, char** argv)
         }
         else
         {
-            AutoPlay();
+            if(strcmp(argv[1], "-auto") != 0)
+            {
+                cout << "Usage: WordleGame [-auto [n]]\n"
+                        "-auto: enables autoplay (To be used with WordlePlayer)\n"
+                        "n: the number of iterations of Autoplay\n";
+                return 0;
+            }
+
+            int n = 1;
+            if(argc >= 3)
+                n = atoi(argv[2]);
+            AutoPlay(n);
         }
     }
     catch (const runtime_error& e)
     {
         cerr << "A aparut o eroare." << endl;
-        cerr << e.what();
+        cerr << e.what() << endl;
         return -1;
     }
     catch (...)
@@ -45,7 +61,10 @@ inline static void StandardPlay()
     wordle_game game(dict);
 
     cout << "Wordle: Incearca sa ghicesti un cuvant de 5 litere!\n"
-            "Vei primi la fiecare incercare indicatii despre ce litere fac parte din cuvant.\n\n"
+            "Vei primi la fiecare incercare indicatii despre ce litere fac parte din cuvant:\n"
+             GRAY_TEXT   "    *Literele colorate cu gri nu fac parte din cuvant;\n"
+             YELLOW_TEXT "    *Literele colorate cu galben se afla pe alta pozitie;\n"
+             GREEN_TEXT  "    *Literele colorate cu verde se afla pe pozitia corecta.\n\n" RESET_TEXT
             "Esti pregatit? Tasteaza un cuvant de 5 litere:" << endl;
 
     int pattern_code = -1;
@@ -95,12 +114,13 @@ inline static void StandardPlay()
         for (int i = 0; i < 5; i++)
         {
             if (pattern[i] == patterns::GREEN)
-                cout << guess[i] << ": Corect!\n";
+                cout << GREEN_TEXT << guess[i] << RESET_TEXT;
             else if (pattern[i] == patterns::YELLOW)
-                cout << guess[i] << ": Alta pozitie!\n";
+                cout << YELLOW_TEXT << guess[i] << RESET_TEXT;
             else
-                cout << guess[i] << ": Nu exista!\n";
+                cout << GRAY_TEXT << guess[i] << RESET_TEXT;
         }
+        cout << "\n";
 
         cout << "Codul raspunsului: " << pattern_code << "\n" << endl;
         if (pattern_code != GUESSED_PATTERN) cout << "Introdu urmatorul cuvant: " << endl;
@@ -113,48 +133,45 @@ inline static void StandardPlay()
 
 }
 
-inline static void AutoPlay()
+inline static void AutoPlay(int n)
 {
     word_dict dict(WORD_DICTIONARY_FILE_PATH);
     dict.init();
 
     wordle_game game(dict);
-    //game.reset();
 
-    int pattern_code = -1;
-    int guesses = 0;
-    do
+    for(int i=1; i<=n; i++)
     {
-        string guess;
-        cin >> guess;
+        game.reset();
+        int pattern_code = -1;
+        int guesses = 0;
+        do {
+            string guess;
+            cin >> guess;
 
-        if (guess.size() != 5)
-            throw runtime_error("Cuvantul ghicit " + guess + " nu are 5 litere!");
+            if (guess.size() != 5)
+                throw runtime_error("Cuvantul ghicit " + guess + " nu are 5 litere!");
 
-        bool isValid = true;
-        for (char& c : guess)
-        {
-            if (c >= 'a' && c <= 'z')
-            {
-                c -= 32;
+            bool isValid = true;
+            for (char &c: guess) {
+                if (c >= 'a' && c <= 'z') {
+                    c -= 32;
+                } else if (c < 'A' || c > 'Z') {
+                    isValid = false;
+                    break;
+                }
             }
-            else if (c < 'A' || c > 'Z')
-            {
-                isValid = false;
-                break;
-            }
-        }
-        if (!isValid)
-            throw runtime_error("Cuvantul ghicit " + guess + " este invalid!");
+            if (!isValid)
+                throw runtime_error("Cuvantul ghicit " + guess + " este invalid!");
 
-        pattern_code = game.guess(guess);
-        if (pattern_code == -1)
-            throw runtime_error("Cuvantul ghicit " + guess + " nu este in dictionar!");
+            pattern_code = game.guess(guess);
+            if (pattern_code == -1)
+                throw runtime_error("Cuvantul ghicit " + guess + " nu este in dictionar!");
 
-        guesses++;
-        cout << pattern_code << endl;
+            guesses++;
+            cout << pattern_code << endl;
 
-    } while (pattern_code != GUESSED_PATTERN);
-
+        } while (pattern_code != GUESSED_PATTERN);
+    }
 
 }
