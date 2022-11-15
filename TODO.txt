@@ -1,5 +1,0 @@
-TODO:
-    * Chage standard arrays and int* to std::array<int> (its safer + better + L + ratio)
-    * IDEE: Pentru gasirea celui mai optim prim cuvant este posibil sa fie folositor sa luam in considerare si media ponderata a informatiei pe care ne-ar da-o
-    orice posibil 2nd guess pentru fiecare cuvant din dictionar (vezi https://youtu.be/fRed0Xmc2Wg?t=340 ). Este posibil ca acest lucru sa nu scada media de ghicire
-    a cuvintelor.
