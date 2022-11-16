@@ -15,9 +15,11 @@
 .data
     cov_v: .long 0
     sum: .long 0
+    _rip: .space 4
 .text
 .global patterns__encode_pattern
 patterns__encode_pattern:
+    popl _rip
     pusha # begin reg block
 
     lea _globl_status, %esi
@@ -66,4 +68,5 @@ patterns__encode_pattern:
     popa # end reg block
 
     pushl cov_v
+    pushl _rip
     ret
