@@ -1,76 +1,113 @@
 # Description:
-#   It's a pattern!
+#     Converts a pattern from an array format to an int format.
+#     The "status_left" parameter contains the status of the first 4 letters of the word, in order, and "status_right" contains the status of the last letter in the last byte.
 # Usage:
-#   Assuming %esi has $_globl_status,
-#   (%esi, %ecx, 1) represents status of letter[%ecx].
+#     pushb [status_left]
+#     pushl [status_right]
+#     call patterns__encode_pattern
+#     popl [encoded]
 .data
-    .global _globl_status
-    _globl_status: .space 8
-
-# Description:
-#   Encodes Pattern into cov_v
-# Usage:
-#   call patterns__encode_pattern
-#   popl cov_v # long
-.data
-    cov_v: .long 0
-    sum: .long 0
     _rip: .space 4
+    p_statusleft: .space 4
+    p_statusright: .space 4
+    r_encoded: .long 0
 .text
 .global patterns__encode_pattern
 patterns__encode_pattern:
+    # Function header
     popl _rip
-    pushal # begin reg block
+    popl p_statusright
+    popl p_statusleft
 
-    lea _globl_status, %esi
-    xor %ecx, %ecx
-    # status[0] * 81
-    xor %eax, %eax
-    movb (%esi, %ecx, 1), %al
-    mov $81, %ebx
-    mul %ebx
-    add %eax, sum
-    inc %ecx
+    ## Begin register block: %eax, %ebx, %ecx
+        pushal
+        lea p_statusleft, %ecx
+        
+        # sum += status[0] * 81
+        movl $0, %eax
+        movl $81, %ebx
+        movb (%ecx), %al
+        mull %ebx
+        addl %eax, r_encoded
+        
+        # sum += status[1] * 27
+        movl $0, %eax
+        movl $27, %ebx
+        movb 1(%ecx), %al
+        mull %ebx
+        addl %eax, r_encoded
+        
+        # sum += status[2] * 9
+        movl $0, %eax
+        movl $9, %ebx
+        movb 2(%ecx), %al
+        mull %ebx
+        addl %eax, r_encoded
+        
+        # sum += status[3] * 3
+        movl $0, %eax
+        movl $3, %ebx
+        movb 3(%ecx), %al
+        mull %ebx
+        addl %eax, r_encoded
+        
+        # sum += status[4]
+        lea p_statusright, %ecx
+        movl $0, %eax
+        movb (%ecx), %al
+        addl %eax, r_encoded
+        
+        popal
+    ## End register block
 
-    # status[1] * 27
-    xor %eax, %eax
-    movb (%esi, %ecx, 1), %al
-    mov $27, %ebx
-    mul %ebx
-    add %eax, sum
-    inc %ecx
-
-    # status[2] * 9
-    xor %eax, %eax
-    movb (%esi, %ecx, 1), %al
-    mov $9, %ebx
-    mul %ebx
-    add %eax, sum
-    inc %ecx
-
-    # status[3] * 3
-    xor %eax, %eax
-    movb (%esi, %ecx, 1), %al
-    mov $3, %ebx
-    mul %ebx
-    add %eax, sum
-    inc %ecx
-
-    # status[4] * 1
-    xor %eax, %eax
-    movb (%esi, %ecx, 1), %al
-    add %eax, sum
-
-    # move result
-    movl sum, %eax
-    movl %eax, cov_v
-
-    popal # end reg block
-
-    pushl cov_v
+    # Function footer
+    pushl r_encoded
     pushl _rip
     ret
 
+# Description:
+#     Converts a pattern from an int format to an array format.
+# Usage:
+#     pushl [encoded]
+#     call patterns__decode_pattern
+#     popl [status_left]
+#     popl [status_right]
+.data
+    _rip_1: .space 4
+    p_encoded: .space 4
+    r_statusleft: .long 0
+    r_statusright: .long 0
+.text
+.global patterns__decode_pattern
+patterns__decode_pattern:
+    # Function header
+    popl _rip_1
+    popl p_encoded
+    
+    ## Begin register block: %eax, %ebx, %ecx, %edx
+        pushal
+        movl p_encoded, %eax
+        
+        movl $0, %edx
+        movl $3, %ebx
+        
+        movl $5, %ecx
+        patterns__decode_pattern__loop:
+            movl $0, %edx
+            movl $3, %ebx
+            divl %ebx
+            movb %dl, -1(%esi, %ecx, 1)
+            
+            loop patterns__decode_pattern__loop
+        
+        popal
+    ## End register block
+    
+    # Function footer
+    pushl r_statusright
+    pushl r_statusleft
+    pushl _rip_1
+    ret
 
 # Description:
 #   Decodes Pattern from cov_v
