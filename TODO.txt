@@ -1,0 +1,10 @@
+Functii ce trebuie sa fie implementate in assembly:
+
+- entropy::calculate_entropy
+- wordle_game::guess
+- wordle_player::reset
+- wordle_player::get_best_guess
+- wordle_player::check_guess
+- wordle_player::apply_guess
+- ASM_WordleGame.main
+- ASM_WordlePlayer.main
