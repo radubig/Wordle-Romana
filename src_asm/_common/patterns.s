@@ -8,7 +8,7 @@
     _globl_status: .space 8
 
 # Description:
-#   Decodes Pattern.
+#   Encodes Pattern into cov_v
 # Usage:
 #   call patterns__encode_pattern
 #   popl cov_v # long
@@ -20,7 +20,7 @@
 .global patterns__encode_pattern
 patterns__encode_pattern:
     popl _rip
-    pusha # begin reg block
+    pushal # begin reg block
 
     lea _globl_status, %esi
     xor %ecx, %ecx
@@ -65,8 +65,57 @@ patterns__encode_pattern:
     movl sum, %eax
     movl %eax, cov_v
 
-    popa # end reg block
+    popal # end reg block
 
     pushl cov_v
     pushl _rip
+    ret
+
+
+# Description:
+#   Decodes Pattern from cov_v
+# Usage:
+#   pushl cov_v
+#   call patterns__decode_pattern
+.data
+    _rip: .space 4
+    cov_v: .space 4
+.text
+.global patterns__decode_pattern
+patterns__decode_pattern:
+    popl _rip
+    popl cov_v
+
+    pushal # Begin reg block
+        lea _globl_status, %esi
+        mov $5, %ecx
+        movl cov_v, %eax
+
+        #iterez de la ecx = 5 ... 1
+        mov $5, %ecx
+        L_1:
+            xor %edx, %edx
+            mov $3, %ebx
+            div %ebx
+            movb %dl, -1(%esi, %ecx, 1) #v[ecx - 1] = rest
+            loop L_1
+
+    popal # End reg block
+    pushl _rip
+    ret
+
+
+# Description:
+#   Sets all elements of Pattern to 0.
+# Usage:
+#   call patterns__clear_pattern
+.data
+.text
+.global patterns__clear_pattern
+patterns__clear_pattern:
+    pushal
+    lea _globl_status, %esi
+    movl $0, 0(%esi)
+    movl $0, 4(%esi)
+    popal
     ret
