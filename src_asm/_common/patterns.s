@@ -78,18 +78,18 @@ patterns__encode_pattern:
 #   pushl cov_v
 #   call patterns__decode_pattern
 .data
-    _rip: .space 4
-    cov_v: .space 4
+    _rip_1: .space 4
+    cov_v_1: .space 4
 .text
 .global patterns__decode_pattern
 patterns__decode_pattern:
-    popl _rip
-    popl cov_v
+    popl _rip_1
+    popl cov_v_1
 
     pushal # Begin reg block
         lea _globl_status, %esi
         mov $5, %ecx
-        movl cov_v, %eax
+        movl cov_v_1, %eax
 
         #iterez de la ecx = 5 ... 1
         mov $5, %ecx
@@ -101,7 +101,7 @@ patterns__decode_pattern:
             loop L_1
 
     popal # End reg block
-    pushl _rip
+    pushl _rip_1
     ret
 
 
