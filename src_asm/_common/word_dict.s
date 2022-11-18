@@ -7,13 +7,13 @@
 # Description:
 #     Initializes the wordle dictionary by reading from the word dictionary file.
 # Usage:
-#     call wordle_dict__init
+#     call word_dict__init
 .data
     l_fd: .space 4
     l_length: .space 4
 .text
-.global wordle_dict__init
-wordle_dict__init:
+.global word_dict__init
+word_dict__init:
     # Open word dictionary
     pushl $WORD_DICTIONARY_FILE_PATH
     call _open
@@ -40,6 +40,7 @@ wordle_dict__init:
         popal
     ## End register block
     
+    # Function footer
     ret
 
 # Description:
@@ -77,7 +78,7 @@ word_dict__throw_if_uninitialized:
 .data
     _rip: .space 4
     p_word: .space 4
-    r_result: .space 4
+    r_result: .long 0
 .text
 .global word_dict__check
 word_dict__check:
@@ -85,7 +86,33 @@ word_dict__check:
     popl _rip
     popl p_word
     
-    # TODO: Check if word is in dictionary
+    ## Begin register block: %eax, %ebx, %ecx, %edx
+        pushal
+        movl $word_dict__list, %ebx
+        movl word_dict__size, %ecx
+        movl $0, %eax
+        
+        # Check every word in the dictionary
+        L_check:
+            # Because we have no way of comparing strings, we can use patterns__get_pattern to check them instead xD
+            # This is so scuffed but I love it!
+            pushl (%ebx, %eax, 1)
+            pushl p_word
+            call patterns__get_pattern
+            popl %edx
+            
+            cmpl $121, %edx
+            je B_ok
+            
+            add $6, %eax
+            loop L_check
+    
+        jmp B_not_ok
+        B_ok:
+            movl $0xffffffff, r_result
+        B_not_ok:
+        popal
+    ## End register block
     
     # Function footer
     pushl r_result

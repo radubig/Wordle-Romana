@@ -4,14 +4,23 @@
     
     pattern_code: .byte 255
     guesses: .long 0
-.data
+
     l_guess: .space 10
     l_inputlen: .space 4
+    
+    test_a: .asciz "CAZAN"
 .text
 .global main
 main:
     # Initialize the dictionary and the game
-    call wordle_dict__init
+    call word_dict__init
+    brk:
+    
+    # TODO: What the fuck?
+    pushl $test_a
+    call word_dict__check
+    popl %eax
+    
     call wordle_game__reset
 
     # Display the intro text
