@@ -63,11 +63,11 @@ wordle_game__reset_forced_word:
 
         # Throw error if index is outside of dictionary
         cmpl word_dict__size, %eax
-        jae wordle_game__reset_forced_word__if_outside
+        jae L_reset
             pushl $ERR_MSG
             call _stderr
             call _exit
-        wordle_game__reset_forced_word__if_outside:
+        L_reset:
     
         mov %eax, target_word_index
         popal
@@ -101,11 +101,11 @@ wordle_game__get_target:
         movl $6, %edx
 
         # Return pointer offset by target word index
-        wordle_game__get_target_forr:
+        L_target:
             addl %ecx, %eax
             sub $1, %edx
             cmpl $0, %edx
-            ja wordle_game__get_target_forr
+            ja L_target
 
         movl %eax, r_word
         popal
@@ -127,12 +127,12 @@ wordle_game__get_target:
     p_guess_3: .space 4
 .text
 .global wordle_game__guess
-wordle_game_guess:
+wordle_game__guess:
     # Function header
     popl _rip_3
     popl p_guess_3
     
-    
+    # TODO: Implement
     
     # Function footer
     pushl _rip_3

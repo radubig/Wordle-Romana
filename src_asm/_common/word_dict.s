@@ -56,11 +56,11 @@ word_dict__throw_if_uninitialized:
         movl word_dict__size, %eax
     
         cmpl $0, %eax
-        ja throw_err_if_no_dict__if
+        ja B_err
             pushl $ERR_NO_DICT
             call _stderr
             call _exit
-        throw_err_if_no_dict__if:
+        B_err:
     
         popal
     ## End register block
@@ -85,7 +85,7 @@ word_dict__check:
     popl _rip
     popl p_word
     
-    
+    # TODO: Check if word is in dictionary
     
     # Function footer
     pushl r_result

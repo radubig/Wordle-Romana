@@ -33,10 +33,10 @@ main:
         
         # Throw an error if guess is not 5 characters
         cmpl $5, l_inputlen
-        je main__if_guess_size
+        je B_len
             pushl $NOT_5_CHARS
             call _stdout
-        main__if_guess_size:
+        B_len:
         
         # Make guess uppercase
         pushl $l_guess

@@ -31,7 +31,7 @@ _open:
 
     # Catch and throw any errors
     cmpl $0, r_fd
-    jge _open__if_ERR
+    jge B_err
         pushl $ERR_MSG_1
         call _stderr
         pushl p_filename
@@ -39,7 +39,7 @@ _open:
         pushl $ERR_MSG_2
         call _stderr
         call _exit
-    _open__if_ERR:
+    B_err:
 
     # Function footers
     pushl r_fd # return value (file_descriptor)

@@ -37,11 +37,11 @@ _write:
     
     # Catch and throw any errors
     cmpl $0, l_length
-    jge _write__if_ERR
+    jge B_err
         pushl $ERR_MSG
         call _stderr
         call _exit
-    _write__if_ERR:
+    B_err:
     
     # Function footer
     pushl _rip

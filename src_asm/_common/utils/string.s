@@ -27,13 +27,13 @@ string__length_with_max:
         movl p_maxlength, %ebx
         movl p_string, %ecx
         
-        string__length__loop:
+        L_len:
             addl $1, %eax
             cmpl p_maxlength, %eax
-            jae string__length__loop_end
+            jae L_len_end
             cmpb $0, (%ecx, %eax, 1)
-            jne string__length__loop
-        string__length__loop_end:
+            jne L_len
+        L_len_end:
         
         movl %eax, r_length
         popal
@@ -110,18 +110,18 @@ string__length_with_trim:
         movl p_string_3, %ebx
         movl r_length_3, %ecx
         
-        string__length_with_trim__forr:
+        L_trim:
             cmpb %ah, -1(%ebx, %ecx, 1)
-            jae string__length_with_trim__good_char_1
+            jae B_trim_1
                 subl $1, %ecx
-                jmp string__length_with_trim__forr
-            string__length_with_trim__good_char_1:
+                jmp L_trim
+            B_trim_1:
         
             cmpb %al, -1(%ebx, %ecx, 1)
-            jbe string__length_with_trim__good_char_2
+            jbe B_trim_2
                 subl $1, %ecx
-                jmp string__length_with_trim__forr
-            string__length_with_trim__good_char_2:
+                jmp L_trim
+            B_trim_2:
         
         movl %ecx, r_length_3
         popal
@@ -154,21 +154,21 @@ string__to_upper:
         movl $0, %eax
         movl p_string_4, %ebx
     
-        string__to_upper__for_char:
+        L_upper:
             movb (%ebx, %eax, 1), %cl
             
             cmpb A_LOWER, %cl
-            jb string__to_upper__if_char_not_lower
+            jb B_upper
             cmpb Z_LOWER, %cl
-            ja string__to_upper__if_char_not_lower
+            ja B_upper
                 subb $32, %cl
-            string__to_upper__if_char_not_lower:
+            B_upper:
             
             movb %cl, (%ebx, %eax, 1)
             
             addl $1, %eax
             cmp $5, %eax
-            jb string__to_upper__for_char
+            jb L_upper
         
         popal
     ## End register block
