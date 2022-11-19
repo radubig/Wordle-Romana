@@ -75,11 +75,12 @@ entropy__calculate_entropy:
         mov e_dict, %esi
         xorl %eax, %eax
         FOR_EACH_GUESS_FROM_DICT:
+
             # retrieve current guess
             lea e_current_guess, %edi
-            movl (%esi, %eax, 4), %ebx
+            movl (%esi, %eax, 1), %ebx
             movl %ebx, 0(%edi)
-            movb 4(%esi, %eax, 4), %bl
+            movb 4(%esi, %eax, 1), %bl
             movb %bl, 4(%edi)
 
             # patterns[] = {0}
@@ -90,19 +91,20 @@ entropy__calculate_entropy:
             pushal
                 mov e_dict_sz, %ecx
                 xorl %eax, %eax
+                xorl %edx, %edx
                 FOR_EACH_TARGET_FROM_REM_WORDS:
                     # test if target is still remaining
                     mov e_cuvram, %esi
-                    movb (%esi, %eax, 1), %bl
+                    movb (%esi, %edx, 1), %bl
                     cmp $1, %bl
                     jne FOR_EACH_TARGET_FROM_REM_WORDS__fin
 
                     # retrieve current target
                     lea e_current_target, %edi
                     mov e_dict, %esi
-                    movl (%esi, %eax, 4), %ebx
+                    movl (%esi, %eax, 1), %ebx
                     movl %ebx, 0(%edi)
-                    movb 4(%esi, %eax, 4), %bl
+                    movb 4(%esi, %eax, 1), %bl
                     movb %bl, 4(%edi)
 
                     # Get the pattern code
@@ -119,6 +121,7 @@ entropy__calculate_entropy:
 
                 FOR_EACH_TARGET_FROM_REM_WORDS__fin:
                     addl $6, %eax
+                    incl %edx
                     loop FOR_EACH_TARGET_FROM_REM_WORDS
             popal
             ## End reg block
