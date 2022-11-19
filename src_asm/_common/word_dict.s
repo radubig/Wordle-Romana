@@ -3,6 +3,11 @@
     word_dict__list: .space 70000
     .global word_dict__size
     word_dict__size: .long 0
+    # word_dict_remaining este un vector de frecventa
+    .global word_dict__remaining
+    word_dict__remaining: .space 15000
+    .global word_dict__remaining_size
+    word_dict__remaining_size: .long 0
 
 # Description:
 #     Initializes the wordle dictionary by reading from the word dictionary file.
@@ -26,7 +31,7 @@ word_dict__init:
     call _read
     popl l_length
     
-    ## Begin register block: %eax, %ecx, %edx
+    ## Begin register block: %eax, %ecx, %edx, %esi
         pushal
         movl l_length, %eax
         
@@ -37,6 +42,16 @@ word_dict__init:
         div %ecx
     
         movl %eax, word_dict__size
+
+        # Initialize all elements of word_dict__remaining to 1
+        # %eax still holds word_dict__size value
+        movl %eax, %ecx
+        lea word_dict__remaining, %esi
+        L_init:
+            movb $1, -1(%esi, %ecx, 1)
+            loop L_init
+        movl %eax, word_dict__remaining_size
+
         popal
     ## End register block
     
