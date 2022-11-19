@@ -15,10 +15,12 @@ patterns__encode_pattern:
     popl _rip
     popl p_status
 
+    movl $0, r_code
+
     ## Begin register block: %eax, %ebx, %ecx
     pushal
         movl p_status, %ecx
-        
+
         # sum += status[0] * 81
         movl $0, %eax
         movl $81, %ebx
@@ -124,6 +126,16 @@ patterns__get_pattern:
     
     ## Begin register block: %eax, %ebx, %ecx, %edx, %esi, %edi
         pushal
+
+        # Step 0: Reset l_status_2 and l_litere_2
+        lea l_status_2, %esi
+        movl $0, 0(%esi)
+        movb $0, 4(%esi)
+        lea l_litere_2, %esi
+        mov $26, %ecx
+        wake_the_f_up:
+            movb $0, -1(%esi, %ecx, 1)
+            loop wake_the_f_up
     
         # Step 1: Create occurence array for all of the letters in the target
         movl p_target_2, %esi

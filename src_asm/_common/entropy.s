@@ -105,8 +105,6 @@ entropy__calculate_entropy:
                     movb 4(%esi, %eax, 4), %bl
                     movb %bl, 4(%edi)
 
-                    cond_br:
-
                     # Get the pattern code
                     pushl $e_current_target
                     pushl $e_current_guess
@@ -192,7 +190,7 @@ entropy__calculate_entropy:
 
         FOR_EACH_GUESS_FROM_DICT__fin:
             addl $6, %eax
-            loop FOR_EACH_GUESS_FROM_DICT
+            # loop FOR_EACH_GUESS_FROM_DICT
 
     popal
     ## End reg block
