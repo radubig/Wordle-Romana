@@ -164,8 +164,25 @@ entropy__calculate_entropy:
             popal
             # Doamne ajuta
 
-            # TODO: Calculate max
+            # Update mx_string
+            # fcomip face ultimul ? primul
+            flds mx_entropy
+            flds e_ent
+            fcomip
+            fstp %st
+            jle FOR_EACH_GUESS_FROM_DICT__fin
 
+            # Update max
+            flds e_ent
+            fstps mx_entropy
+            lea e_current_guess, %esi
+            mov mx_string, %edi
+            movl 0(%esi), %ebx
+            movl %ebx, 0(%edi)
+            movb 4(%esi), %bl
+            movb %bl, 4(%edi)
+
+        FOR_EACH_GUESS_FROM_DICT__fin:
             addl $6, %eax
             loop FOR_EACH_GUESS_FROM_DICT
 
