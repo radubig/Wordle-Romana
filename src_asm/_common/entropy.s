@@ -127,3 +127,75 @@ entropy__calculate_entropy:
 
             debug:
 
+            # De aici incepe partea cu calcularea entropiei, doamne ajuta
+            pushal
+                fldz # incarca +0.0f pe stiva
+                fstps e_ent # descarca val de pe stiva in e_ent si da pop
+                # for(int pattern : patterns)
+                mov $243, %ecx
+                mov $e_patterns, %esi
+                FOR_ALL_PATTERNS:
+                    # Retrieve the number of matches in e_aux
+                    movl -4(%esi, %ecx, 4), %eax
+                    movl %eax, e_aux
+
+                    # double p = 1.0 * pattern / cuvinteRamase.size();
+                    fildl e_cuvram_sz
+                    fildl e_aux
+                    fdivp %st, %st(1)
+                    fsts e_p
+                    ## in momentul acesta pe st[0] se afla p
+
+                    # if (p == 0) continue;
+                    fldz
+                    fcomip #echivalentul lui cmp + un pop
+                    fstp %st #golesc stiva de tot
+                    je FOR_ALL_PATTERNS__fin
+
+                    # double v = p * log2(1.0 / p);
+                    flds e_p
+                    fld1
+                    fdivp %st, %st(1)
+                    fstps e_v
+
+                    fld1
+                    flds e_v
+                    fyl2x
+                    fmuls e_p
+
+                    # entropy += v
+                    fadds e_ent
+                    fstps e_ent
+
+                FOR_ALL_PATTERNS__fin:
+                    loop FOR_ALL_PATTERNS
+            popal
+            # Doamne ajuta
+
+            # Update mx_string
+            # fcomip face ultimul ? primul
+            flds mx_entropy
+            flds e_ent
+            fcomip
+            fstp %st
+            jle FOR_EACH_GUESS_FROM_DICT__fin
+
+            # Update max
+            flds e_ent
+            fstps mx_entropy
+            lea e_current_guess, %esi
+            mov mx_string, %edi
+            movl 0(%esi), %ebx
+            movl %ebx, 0(%edi)
+            movb 4(%esi), %bl
+            movb %bl, 4(%edi)
+
+        FOR_EACH_GUESS_FROM_DICT__fin:
+            addl $6, %eax
+            loop FOR_EACH_GUESS_FROM_DICT
+
+    popal
+    ## End reg block
+    pushl mx_string
+    pushl _rip
+    ret
