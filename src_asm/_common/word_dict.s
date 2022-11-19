@@ -3,6 +3,7 @@
     word_dict__list: .space 70000
     .global word_dict__size
     word_dict__size: .long 0
+    # TODO: mtop (scope)
     # word_dict_remaining este un vector de frecventa
     .global word_dict__remaining
     word_dict__remaining: .space 15000

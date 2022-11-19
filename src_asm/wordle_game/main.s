@@ -8,13 +8,19 @@
     l_guess: .space 10
     l_inputlen: .space 4
     
-    test_a: .asciz "CAZAN"
+    test_a: .asciz "AVERI"
+    test_b: .asciz "ABACA"
 .text
 .global main
 main:
     # Initialize the dictionary and the game
     call word_dict__init
-    brk:
+
+    pushl $word_dict__list
+    pushl word_dict__size
+    pushl $word_dict__remaining
+    pushl word_dict__remaining_size
+    call entropy__calculate_entropy
     
     # TODO: What the fuck?
     pushl $test_a

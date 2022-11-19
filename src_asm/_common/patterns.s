@@ -22,7 +22,7 @@ patterns__encode_pattern:
         # sum += status[0] * 81
         movl $0, %eax
         movl $81, %ebx
-        movb (%ecx), %al
+        movb 0(%ecx), %al
         mull %ebx
         addl %eax, r_code
         
@@ -163,7 +163,7 @@ patterns__get_pattern:
             movl $0, %eax
             movb -1(%esi, %ecx, 1), %al
             sub $65, %al
-            movb -1(%edi, %eax, 1), %dl
+            movb (%edi, %eax, 1), %dl
             cmp $0, %dl # && litere[guess[i] - 'A'] > 0)
             jle L_get_3_end
             
