@@ -72,11 +72,11 @@ entropy__calculate_entropy:
     pushal
         # Iterate over all words from e_dict
         mov e_dict_sz, %ecx
-        mov e_dict, %esi
         xorl %eax, %eax
         FOR_EACH_GUESS_FROM_DICT:
 
             # retrieve current guess
+            mov e_dict, %esi
             lea e_current_guess, %edi
             movl (%esi, %eax, 1), %ebx
             movl %ebx, 0(%edi)
@@ -126,7 +126,7 @@ entropy__calculate_entropy:
             popal
             ## End reg block
 
-            debug:
+           b_before_f:
 
             # De aici incepe partea cu calcularea entropiei, doamne ajuta
             pushal
@@ -173,6 +173,8 @@ entropy__calculate_entropy:
             popal
             # Doamne ajuta
 
+            b_after_f:
+
             # Update mx_string
             # fcomip face ultimul ? primul
             flds mx_entropy
@@ -185,7 +187,7 @@ entropy__calculate_entropy:
             flds e_ent
             fstps mx_entropy
             lea e_current_guess, %esi
-            mov mx_string, %edi
+            lea mx_string, %edi
             movl 0(%esi), %ebx
             movl %ebx, 0(%edi)
             movb 4(%esi), %bl
@@ -193,10 +195,14 @@ entropy__calculate_entropy:
 
         FOR_EACH_GUESS_FROM_DICT__fin:
             addl $6, %eax
-            # loop FOR_EACH_GUESS_FROM_DICT
+            decl %ecx
+            cmp $0, %ecx
+            je FOR_EXIT_1
+            jmp FOR_EACH_GUESS_FROM_DICT
+        FOR_EXIT_1:
 
     popal
     ## End reg block
-    pushl mx_string
+    pushl $mx_string
     pushl _rip
     ret

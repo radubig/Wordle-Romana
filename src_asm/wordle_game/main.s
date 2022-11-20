@@ -10,23 +10,31 @@
     
     test_a: .asciz "AVERI"
     test_b: .asciz "ABACA"
+    pnt_test_rez: .space 4
 .text
 .global main
 main:
     # Initialize the dictionary and the game
     call word_dict__init
 
+    # TODO: This block is test only
     pushl $word_dict__list
     pushl word_dict__size
     pushl $word_dict__remaining
     pushl word_dict__remaining_size
     call entropy__calculate_entropy
-    
+    popl pnt_test_rez
+
+    pushl pnt_test_rez
+    call _stdout
+
+    call _exit
+
     # TODO: What the fuck?
     pushl $test_a
     call word_dict__check
     popl %eax
-    
+
     call wordle_game__reset
 
     # Display the intro text
