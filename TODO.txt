@@ -4,12 +4,11 @@
 ! Naming conventions: Pe partea de assembly fiecare dintre noi va folosi naming convention-ul preferat ca sa fim mai eficienti.
 * Personal, faza cu _numar dupa fiecare variabila mi se pare o idee ft proasta, dar daca tie iti este mai usor sa codezi asa, atunci fa asa.
 * Eu o sa folosesc ceva gen namespace_variabila.
-* De asemenea chiar daca avem parametri globali, in toate functiile scrise de mine voi trasmite un pointer catre acele structuri ca sa pot folosi un nume mai usor pt acele variabile.
 
 Functii ce trebuie sa fie implementate in assembly:
 
 - wordle_game::guess (requires testing)
-- wordle_player::get_best_guess
+- wordle_player::get_best_guess (requires testing)
 - wordle_player::check_guess
 - wordle_player::apply_guess
 - ASM_WordleGame.main

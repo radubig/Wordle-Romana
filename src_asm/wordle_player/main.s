@@ -1,3 +1,7 @@
+.data
+    WP_NO_GUESSES: .long 0 # Number of tried guesses
+    WP_FIRST_GUESS: .ascii "TAREI"
+
 # Main ASM_WordlePlayer function
 .data
 .text
