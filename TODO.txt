@@ -1,13 +1,7 @@
-entropy.s checklist:
-- (verificat) Check if patterns are retreieved correctly
-- Check floating point logic
-
-
 Functii ce trebuie sa fie implementate in assembly:
 
 - wordle_game::guess
 - wordle_player::reset
-- (to be heavily tested) entropy::calculate_entropy ---> wordle_player::get_best_guess
 - wordle_player::get_best_guess
 - wordle_player::check_guess
 - wordle_player::apply_guess
