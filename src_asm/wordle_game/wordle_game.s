@@ -125,15 +125,25 @@ wordle_game__get_target:
 .data
     _rip_3: .space 4
     p_guess_3: .space 4
+
+    p_target_word_3: .space 4
+    r_pattern_3: .space 4
 .text
 .global wordle_game__guess
 wordle_game__guess:
     # Function header
     popl _rip_3
     popl p_guess_3
-    
-    # TODO: Implement
+
+    call wordle_game__get_target
+    popl p_target_word_3
+
+    pushl p_target_word_3
+    pushl p_guess_3
+    call patterns__get_pattern
+    popl r_pattern_3
     
     # Function footer
+    pushl r_pattern_3
     pushl _rip_3
     ret

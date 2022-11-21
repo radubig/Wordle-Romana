@@ -17,7 +17,7 @@ main:
     # Initialize the dictionary and the game
     call word_dict__init
 
-    # TODO: This block is test only
+    # Test entropie
     pushl $word_dict__list
     pushl word_dict__size
     pushl $word_dict__remaining
@@ -29,7 +29,7 @@ main:
     call _stdout
 
     call _exit
-    # Test block end
+    # End of test
 
     # Display the intro text
     pushl $INTRO_TEXT
@@ -51,9 +51,10 @@ main:
         # Throw an error if guess is not 5 characters
         # TODO: This is useless (read todo.txt)
         cmpl $5, l_inputlen
-        je B_len
+        je et_len
             pushl $NOT_5_CHARS
             call _stdout
+        et_len:
         
         # Make guess uppercase
         pushl $l_guess

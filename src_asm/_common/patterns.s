@@ -104,6 +104,7 @@ patterns__decode_pattern:
 
 # Description:
 #     Generates the pattern given the target word and the guessed word.
+#     Returns the code for the generated pattern
 # Usage:
 #     pushl *[target]
 #     pushl *[guess]
