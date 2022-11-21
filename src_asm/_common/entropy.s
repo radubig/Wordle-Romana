@@ -31,7 +31,6 @@ entropy__clear_patterns:
 #     Input: dictionary and remaining_words.
 #     Output: best word (as char[5])
 # Usage:
-# TODO: use global
 #     pushl *[dictionary]
 #     pushl *[dictionary_sz]
 #     pushl *[remaining_words]
@@ -39,7 +38,7 @@ entropy__clear_patterns:
 #     call entropy__calculate_entropy
 #     popl *[best_word]
 .data
-# TODO: naming convention
+# TODO: naming convention (maybe not cuz you'll break stuff)
     _rip: .space 4
     e_dict: .space 4
     e_dict_sz: .space 4
@@ -126,8 +125,6 @@ entropy__calculate_entropy:
             popal
             ## End reg block
 
-           b_before_f:
-
             # De aici incepe partea cu calcularea entropiei, doamne ajuta
             pushal
                 fldz # incarca +0.0f pe stiva
@@ -173,15 +170,13 @@ entropy__calculate_entropy:
             popal
             # Doamne ajuta
 
-            b_after_f:
-
             # Update mx_string
             # fcomip face ultimul ? primul
             flds mx_entropy
             flds e_ent
             fcomip
             fstp %st
-            jle FOR_EACH_GUESS_FROM_DICT__fin
+            jbe FOR_EACH_GUESS_FROM_DICT__fin
 
             # Update max
             flds e_ent
