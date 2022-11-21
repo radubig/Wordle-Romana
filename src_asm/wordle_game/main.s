@@ -8,7 +8,7 @@
     l_guess: .space 10
     l_inputlen: .space 4
     
-    test_a: .asciz "AVERI"
+    test_a: .asciz "ADZCB"
     test_b: .asciz "ABACA"
     pnt_test_rez: .space 4
     test_target: .space 4
@@ -28,7 +28,7 @@ main:
     pushl $6
     call _stdout_sz
 
-    pushl test_a
+    pushl $test_a
     call wordle_game__guess
     popl %eax
 
