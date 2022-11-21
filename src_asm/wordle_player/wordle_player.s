@@ -49,7 +49,7 @@ wordle_player__get_best_guess:
         # Indexul se afla in %ecx - 1
         decl %ecx
         lea word_dict__list, %esi
-        movl *(%esi, %ecx, 4), %eax
+        lea (%esi, %ecx, 4), %eax
         movl %eax, wp1_best_guess
         jmp wp1_END
 
@@ -68,3 +68,127 @@ wp1_END:
     pushl wp1_best_guess
     pushl wp1_rip
     ret
+
+
+# Description:
+#     Checks if a word matches the pattern of a guess.
+#     Returns 1 if the word matches the pattern or 0 otherwise.
+# Usage:
+#     pushl *[guess]
+#     pushl *[pattern] (in byte format)
+#     pushl *[word]
+#     call wordle_player__check_guess
+#     popl result (long)
+.data
+    wp2_rip: .space 4
+    wp2_guess: .space 4
+    wp2_pattern: .space 4
+    wp2_word: .space 4
+    wp2_result: .long 1
+.text
+.global wordle_player__check_guess
+wordle_player__check_guess:
+    popl wp2_rip
+    popl wp2_word
+    popl wp2_pattern
+    popl wp2_guess
+
+    pushal
+        # 0 .. 4
+        movl $0, %ecx
+        wp2_loop:
+            movl wp2_pattern, %esi
+            movb (%esi, %ecx, 1), %al
+            xorl %ebx, %ebx # %ebx contine litera guess[i]
+            movl wp2_guess, %edi
+            movb (%edi, %ecx, 1), %bl
+
+            cmp $0, %al # Cazul 0 (gri)
+            jne wp2_L1
+            pushl wp2_word
+            pushl %ebx
+            call wordle_player__find_letter
+            popl %edx
+            cmp $0, %edx
+            je wp2_loop_fin
+            movl $0, wp2_result
+            jmp wp2_exit
+
+            wp2_L1:
+            cmp $1, %al # Cazul 1 (verde)
+            jne wp2_L2
+            movl wp2_word, %edi
+            movb (%edi, %ecx, 1), %dl
+            cmp %bl, %dl
+            je wp2_loop_fin
+            movl $0, wp2_result
+            jmp wp2_exit
+
+            wp2_L2: # Cazul 2 (galben)
+            movl wp2_word, %edi
+            movb (%edi, %ecx, 1), %dl
+            cmp %bl, %dl
+            jne wp2_L2_2
+            movl $0, wp2_result
+            jmp wp2_exit
+            wp2_L2_2:
+            pushl wp2_word
+            pushl %ebx
+            call wordle_player__find_letter
+            popl %edx
+            cmp $1, %edx
+            je wp2_loop_fin
+            movl $0, wp2_result
+            jmp wp2_exit
+
+            wp2_loop_fin:
+            incl %ecx
+            cmp $4, %ecx
+            jle wp2_loop
+
+    wp2_exit:
+    popal
+
+    pushl wp2_result
+    pushl wp2_rip
+    ret
+
+
+
+# Description:
+#     Implements word.find(letter) and returns 1 or 0.
+# Usage:
+#     pushl *[word] (5 bytes)
+#     pushl lit (long)
+#     call wordle_player__find_letter
+#     popl result (long)
+.data
+    wp3_rip: .space 4
+    wp3_word: .space 4
+    wp3_lit: .long 0
+    wp3_res: .long 0
+.text
+.global wordle_player__find_letter
+wordle_player__find_letter:
+    popl wp3_rip
+    popl wp3_lit
+    popl wp3_word
+    pushal
+        mov wp3_word, %esi
+        mov $5, %ecx
+        xorl %eax, %eax
+        wp3_loop:
+            movb -1(%esi, %ecx, 1), %al
+            cmp wp3_lit, %eax
+            je wp3_found
+            loop wp3_loop
+            jmp wp3_exit
+        wp3_found:
+        movl $1, wp3_res
+        wp3_exit:
+
+    popal
+    pushl wp3_res
+    pushl wp3_rip
+    ret
+
