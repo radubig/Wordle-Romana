@@ -38,7 +38,6 @@ entropy__clear_patterns:
 #     call entropy__calculate_entropy
 #     popl *[best_word]
 .data
-# TODO: naming convention (maybe not cuz you'll break stuff)
     _rip: .space 4
     e_dict: .space 4
     e_dict_sz: .space 4

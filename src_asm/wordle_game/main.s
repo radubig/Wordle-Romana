@@ -29,13 +29,7 @@ main:
     call _stdout
 
     call _exit
-
-    # TODO: What the fuck?
-    pushl $test_a
-    call word_dict__check
-    popl %eax
-
-    call wordle_game__reset
+    # Test block end
 
     # Display the intro text
     pushl $INTRO_TEXT
@@ -55,18 +49,14 @@ main:
         popl l_inputlen
         
         # Throw an error if guess is not 5 characters
+        # TODO: This is useless (read todo.txt)
         cmpl $5, l_inputlen
         je B_len
             pushl $NOT_5_CHARS
             call _stdout
-        B_len:
         
         # Make guess uppercase
         pushl $l_guess
         call string__to_upper
-        
-        # TODO: Check if guess contains invalid characters
-        
-        test:
 
     call _exit
