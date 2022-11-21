@@ -192,3 +192,69 @@ wordle_player__find_letter:
     pushl wp3_rip
     ret
 
+
+
+# Description:
+#     Updates remaining words based on the guessed word and the pattern code.
+# Usage:
+#     pushl *[guess]
+#     pushl p_code (long)
+#     call wordle_player__apply_guess
+.data
+    wp4_rip: .space 4
+    wp4_guess: .space 4
+    wp4_pcode: .long 0
+
+    wp4_pattern: .space 5
+.text
+.global wordle_player__apply_guess
+wordle_player__aply_guess:
+    popl wp4_rip
+    popl wp4_pcode
+    popl wp4_guess
+
+    pushl wp4_pcode
+    pushl $wp4_pattern
+    call patterns__decode_pattern
+
+    # Begin reg block
+    pushal
+        xorl %eax, %eax
+        xorl %ecx, %ecx
+        lea word_dict__remaining, %esi
+        lea word_dict__list, %edi
+
+        wp4_loop:
+            # Verify that word_dict__remaining still has %ecx
+            movb (%esi, %ecx, 1), %bl
+            cmp $0, %bl
+            je wp4_loop_fin
+
+            # Determine the address of the word and call function
+            lea (%edi, %eax, 1), %ebx
+            pushl wp4_guess
+            pushl $wp4_pattern
+            pushl %ebx
+            call wordle_player__check_guess
+            popl %ebx # result (1 or 0)
+
+            cmp $1, %ebx
+            je wp4_loop_fin
+
+            # If 0 then remove said word
+            movb $0, (%esi, %ecx, 1)
+            decl word_dict__remaining_size
+
+            wp4_loop_fin:
+            incl %ecx
+            addl $6, %eax
+            cmp word_dict__size, %ecx
+            jl wp4_loop
+
+        incl WP_NO_GUESSES
+        # TODO: May need to store the pattern code somewhere
+    popal
+    # End reg block
+
+    pushl wp4_rip
+    ret
