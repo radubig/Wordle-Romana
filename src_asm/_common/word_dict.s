@@ -43,19 +43,11 @@ word_dict__init:
         div %ecx
     
         movl %eax, word_dict__size
-
-        # Initialize all elements of word_dict__remaining to 1
-        # %eax still holds word_dict__size value
-        movl %eax, %ecx
-        lea word_dict__remaining, %esi
-        L_init:
-            movb $1, -1(%esi, %ecx, 1)
-            loop L_init
-        movl %eax, word_dict__remaining_size
-
         popal
     ## End register block
-    
+    # Initialize all elements of word_dict__remaining to 1
+    call word_dict__reset
+
     # Function footer
     ret
 
@@ -133,4 +125,22 @@ word_dict__check:
     # Function footer
     pushl r_result
     pushl _rip
+    ret
+
+# Description:
+#     Sets all elements of word_dict__remaining to 1 and resets word_dict__remaining_size
+# Usage:
+#     call word_dict__reset
+.data
+.text
+.globl word_dict__reset
+word_dict__reset:
+    pushal
+        movl word_dict__size, %ecx
+        movl %ecx, word_dict__remaining_size
+        lea word_dict__remaining, %esi
+        L_init:
+            movb $1, -1(%esi, %ecx, 1)
+            loop L_init
+    popal
     ret
