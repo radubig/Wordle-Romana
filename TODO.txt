@@ -9,7 +9,6 @@
 Functii ce trebuie sa fie implementate in assembly:
 
 - wordle_game::guess (requires testing)
-- wordle_player::reset
 - wordle_player::get_best_guess
 - wordle_player::check_guess
 - wordle_player::apply_guess

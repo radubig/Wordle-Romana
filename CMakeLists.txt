@@ -34,3 +34,6 @@ file(GLOB_RECURSE ASM__Common "src_asm/_common/*")
 
 file(GLOB_RECURSE ASM_WordleGame "src_asm/wordle_game/*")
 add_executable(ASM_WordleGame ${ASM_WordleGame} ${ASM__Common})
+
+file(GLOB_RECURSE ASM_WordlePlayer "src_asm/wordle_player/*")
+add_executable(ASM_WordlePlayer ${ASM_WordlePlayer} ${ASM__Common})
