@@ -7,6 +7,7 @@
 
 Functii ce trebuie sa fie implementate in assembly:
 
+- patterns__get_pattern
 - wordle_game::guess (requires testing)
 - wordle_player::get_best_guess (requires testing)
 - wordle_player::check_guess (requires HEAVY testing)

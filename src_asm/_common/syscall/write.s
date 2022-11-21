@@ -94,3 +94,33 @@ _stderr:
     # Function footer    
     pushl _rip_3
     ret
+
+# Description
+#    Writes data to stdout (fixed size)
+# Usage:
+#    pushl *[data]
+#    pushl size
+#    call _stdout_sz
+.data
+    _rip_4: .space 4
+    p_data_4: .space 4
+    p_size_4: .long 0
+.text
+.global _stdout_sz
+_stdout_sz:
+    # Function header
+    popl _rip_4
+    popl p_size_4
+    popl p_data_4
+
+    pushal
+        movl $4, %eax # syscall 4: write
+        movl $1, %ebx # file_descriptor
+        movl p_data_4, %ecx # data
+        movl p_size_4, %edx # length
+        int $0x80
+    popal
+
+    # Function footer
+    pushl _rip_4
+    ret

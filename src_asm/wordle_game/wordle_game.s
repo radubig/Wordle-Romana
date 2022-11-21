@@ -60,13 +60,13 @@ wordle_game__reset_forced_word:
     ## Begin register block: %eax
         pushal
         movl p_fwordidx, %eax
-
+        b_test2:
         # Throw error if index is outside of dictionary
-        cmpl word_dict__size, %eax
-        jae L_reset
-            pushl $ERR_MSG
-            call _stderr
-            call _exit
+        cmp word_dict__size, %eax
+        jb L_reset
+        pushl $ERR_MSG
+        call _stderr
+        call _exit
         L_reset:
     
         mov %eax, target_word_index
