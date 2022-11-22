@@ -7,7 +7,6 @@
 
 
 TODO:
- * Implement _close
  * Make a parsing function for int -> string
  * Do the rest of the IPC
  * Remove dependency at the end

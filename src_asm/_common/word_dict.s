@@ -45,6 +45,11 @@ word_dict__init:
         movl %eax, word_dict__size
         popal
     ## End register block
+
+    # Close dictionary file
+    pushl l_fd
+    call _close
+
     # Initialize all elements of word_dict__remaining to 1
     call word_dict__reset
 

@@ -45,3 +45,27 @@ _open:
     pushl r_fd # return value (file_descriptor)
     pushl _rip
     ret
+
+
+# Description:
+#    Closes a file.
+# Usage:
+#    pushl [file_descriptor]
+#    call _close
+.data
+    _rip_2: .space 4
+    p_fd_2: .space 4
+.text
+.global _close
+_close:
+    popl _rip_2
+    popl p_fd_2
+
+    pushal
+        movl $0x06, %eax # 6: close
+        movl p_fd_2, %ebx
+        int $0x80
+    popal
+
+    pushl _rip_2
+    ret

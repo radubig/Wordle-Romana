@@ -39,7 +39,10 @@ main:
     popl %eax
 
     b_test:
-    xorl %ebx, %ebx
+    pushl test_fd
+    call _close
+
+    jmp b_end
 
     nu_exista:
     pushl $test_rau
