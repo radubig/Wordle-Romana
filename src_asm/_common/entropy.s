@@ -101,7 +101,6 @@ entropy__calculate_entropy:
                     jne FOR_EACH_TARGET_FROM_REM_WORDS__fin
 
                     # retrieve current target
-                    b_aici:
                     lea e_current_target, %edi
                     mov e_dict, %esi
                     movl (%esi, %eax, 1), %ebx

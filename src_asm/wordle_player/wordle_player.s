@@ -38,7 +38,6 @@ wordle_player__get_best_guess:
         jne wp1_L2
 
         # If true then search said word
-        b_final:
         movl word_dict__size, %ecx
         lea word_dict__remaining, %esi
         wp1_loop:
@@ -267,7 +266,7 @@ wordle_player__apply_guess:
             jl wp4_loop
 
         incl WP_NO_GUESSES
-        # TODO: May need to store the pattern code somewhere
+
     popal
     # End reg block
 

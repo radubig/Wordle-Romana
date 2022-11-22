@@ -8,32 +8,34 @@
     l_guess: .space 10
     l_inputlen: .space 4
     
-    test_a: .asciz "ADZCB"
-    test_b: .asciz "ABACA"
-    pnt_test_rez: .space 4
-    test_target: .space 4
+    test_file: .asciz "cuvinte.txt"
+    test_bun: .asciz "Fisierul exista!\n"
+    test_rau: .asciz "Fisierul NU exista!\n"
+
 .text
 .global main
 main:
     # Initialize the dictionary and the game
     call word_dict__init
 
-    # Test wordle_game::guess
-    pushl $0
-    call wordle_game__reset_forced_word
+    # Test access
 
-    call wordle_game__get_target
-    popl test_target
-    pushl test_target
-    pushl $6
-    call _stdout_sz
-
-    pushl $test_a
-    call wordle_game__guess
+    pushl $test_file
+    call _access
     popl %eax
 
-    b_test:
+    cmp $1, %eax
+    jne nu_exista
+    pushl $test_bun
+    call _stdout
+    jmp b_end
+    nu_exista:
+    pushl $test_rau
+    call _stdout
+
+    b_end:
     call _exit
+
     # End of test
 
     # Display the intro text

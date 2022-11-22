@@ -36,8 +36,6 @@ main:
         call wordle_player__get_best_guess
         popl test_guess
 
-        b_best_guess:
-
         pushl test_guess
         pushl $5
         call _stdout_sz
@@ -53,18 +51,9 @@ main:
         cmp test_pattern, %eax
         je test_loop_fin
 
-        b_test:
-        # pushl $ohno
-        # call _stdout
-
         pushl test_guess
         pushl test_pattern
         call wordle_player__apply_guess
-
-        b_howmany:
-
-        # pushl $ohno
-        # call _stdout
 
         jmp test_loop
 
