@@ -38,6 +38,7 @@ wordle_player__get_best_guess:
         jne wp1_L2
 
         # If true then search said word
+        b_final:
         movl word_dict__size, %ecx
         lea word_dict__remaining, %esi
         wp1_loop:
@@ -48,9 +49,11 @@ wordle_player__get_best_guess:
         wp1_loop_end:
         # Indexul se afla in %ecx - 1
         decl %ecx
-        lea word_dict__list, %esi
-        lea (%esi, %ecx, 4), %eax
-        movl %eax, wp1_best_guess
+        mov $6, %eax
+        mul %ecx
+        lea word_dict__list, %ebx
+        add %eax, %ebx
+        movl %ebx, wp1_best_guess
         jmp wp1_END
 
     wp1_L2:
@@ -207,6 +210,7 @@ wordle_player__find_letter:
     wp4_rip: .space 4
     wp4_guess: .space 4
     wp4_pcode: .long 0
+    newline: .asciz "\n"
 
     wp4_pattern: .space 5
 .text
@@ -239,12 +243,20 @@ wordle_player__apply_guess:
             pushl $wp4_pattern
             pushl %ebx
             call wordle_player__check_guess
-            popl %ebx # result (1 or 0)
+            popl %edx # result (1 or 0)
 
-            cmp $1, %ebx
+            cmp $1, %edx
             je wp4_loop_fin
 
             # If 0 then remove said word
+            /*
+            pushl %ebx
+            pushl $5
+            call _stdout_sz
+            pushl $newline
+            call _stdout
+            */
+
             movb $0, (%esi, %ecx, 1)
             decl word_dict__remaining_size
 

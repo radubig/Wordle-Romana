@@ -66,6 +66,9 @@ entropy__calculate_entropy:
     popl e_dict_sz
     popl e_dict
 
+    fldz
+    fstps mx_entropy
+
     ## Begin reg block
     pushal
         # Iterate over all words from e_dict
@@ -98,6 +101,7 @@ entropy__calculate_entropy:
                     jne FOR_EACH_TARGET_FROM_REM_WORDS__fin
 
                     # retrieve current target
+                    b_aici:
                     lea e_current_target, %edi
                     mov e_dict, %esi
                     movl (%esi, %eax, 1), %ebx

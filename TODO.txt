@@ -5,10 +5,5 @@
 * Personal, faza cu _numar dupa fiecare variabila mi se pare o idee ft proasta, dar daca tie iti este mai usor sa codezi asa, atunci fa asa.
 * Eu o sa folosesc ceva gen namespace_variabila.
 
-Functii ce trebuie sa fie implementate in assembly:
-
-- wordle_player::get_best_guess (requires testing)
-- wordle_player::check_guess (requires HEAVY testing)
-- wordle_player::apply_guess (requires testing)
-- ASM_WordleGame.main
-- ASM_WordlePlayer.main
+We did it.
+Acum trebuie finalizat WordleGame, WordlePlayer si sistemul IPC. Bafta Jean.
