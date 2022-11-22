@@ -69,3 +69,52 @@ _close:
 
     pushl _rip_2
     ret
+
+
+# Description:
+#    Opens a file for writing (and creates it if it doesn't exist)
+# Usage:
+#    pushl *[file_name]
+#    call _open
+#    popl [file_descriptor]
+.data
+    ERR_MSG_1q: .asciz "A aparut o eroare la deschiderea fisierului "
+    ERR_MSG_2q: .asciz "\n"
+
+    _ripq: .space 4
+    p_filenameq: .space 4
+    r_fdq: .space 4
+.text
+.global _open_w
+_open_w:
+    # Function header
+    popl _ripq
+    popl p_filenameq
+
+    ## Begin register block: %eax, %ebx, %ecx, %edx
+        pushal
+        movl $5, %eax # syscall 5: open
+        movl p_filenameq, %ebx # file_name
+        movl $0101, %ecx # O_RDONLY | O_CREAT
+        movl $0700, %edx # idk
+        int $0x80
+        movl %eax, r_fdq # file_descriptor
+        popal
+    ## End register block
+
+    # Catch and throw any errors
+    cmpl $0, r_fdq
+    jge B_errq
+        pushl $ERR_MSG_1q
+        call _stderr
+        pushl p_filenameq
+        call _stderr
+        pushl $ERR_MSG_2q
+        call _stderr
+        call _exit
+    B_errq:
+
+    # Function footers
+    pushl r_fdq # return value (file_descriptor)
+    pushl _ripq
+    ret

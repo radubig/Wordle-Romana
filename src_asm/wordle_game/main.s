@@ -42,12 +42,16 @@ main:
     pushl test_fd
     call _close
 
-    pushl $1
+    pushl $test_del
+    call _open_w
+    popl test_fd
+
+    pushl test_fd
     pushl %eax
     call _write_int
 
-    pushl $test_del
-    call _unlink
+    pushl test_fd
+    call _close
 
     jmp b_end
 
