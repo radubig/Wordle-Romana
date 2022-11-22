@@ -7,6 +7,8 @@
 
 
 TODO:
+ * Add _creat syscall (Or _open with create and write flags)
+ * Add _unlink syscall
  * Make a parsing function for int -> string
  * Do the rest of the IPC
  * Remove dependency at the end
