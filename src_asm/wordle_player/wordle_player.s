@@ -92,6 +92,7 @@ wordle_player__check_guess:
     popl wp2_word
     popl wp2_pattern
     popl wp2_guess
+    movl $1, wp2_result
 
     pushal
         # 0 .. 4
@@ -173,6 +174,8 @@ wordle_player__find_letter:
     popl wp3_rip
     popl wp3_lit
     popl wp3_word
+    movl $0, wp3_res
+
     pushal
         mov wp3_word, %esi
         mov $5, %ecx
@@ -208,7 +211,7 @@ wordle_player__find_letter:
     wp4_pattern: .space 5
 .text
 .global wordle_player__apply_guess
-wordle_player__aply_guess:
+wordle_player__apply_guess:
     popl wp4_rip
     popl wp4_pcode
     popl wp4_guess

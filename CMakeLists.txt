@@ -36,4 +36,5 @@ file(GLOB_RECURSE ASM_WordleGame "src_asm/wordle_game/*")
 add_executable(ASM_WordleGame ${ASM_WordleGame} ${ASM__Common})
 
 file(GLOB_RECURSE ASM_WordlePlayer "src_asm/wordle_player/*")
-add_executable(ASM_WordlePlayer ${ASM_WordlePlayer} ${ASM__Common})
+add_executable(ASM_WordlePlayer ${ASM_WordlePlayer} ${ASM__Common} "src_asm/wordle_game/wordle_game.s")
+# TODO: Remove last source after testing
