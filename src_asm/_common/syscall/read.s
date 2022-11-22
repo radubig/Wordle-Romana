@@ -76,3 +76,64 @@ _stdin:
     pushl r_length_2 # return value (length)
     pushl _rip_2
     ret
+
+
+# Description:
+#    Reads data from a file descriptor and returns the integer value.
+#    This function is only meant to be used for positive numbers up to 3 digits. (Max lenght will be auto-set accordingly)
+# Usage:
+#    pushl [file_descriptor]
+#    pushl *[buffer]
+#    call _read_int
+#    popl [value]
+.data
+    r3_rip: .space 4
+    r3_fd: .space 4
+    r3_buf: .space 4
+    r3_value: .long 0
+    r3_sz: .long 0
+.text
+.global _read_int
+_read_int:
+    popl r3_rip
+    popl r3_buf
+    popl r3_fd
+    movl $0, r3_value
+
+    pushal
+        # Call read
+        pushl r3_fd
+        pushl r3_buf
+        pushl $3
+        call _read
+        popl r3_sz
+
+        xorl %eax, %eax
+        xorl %ecx, %ecx
+        xorl %edx, %edx
+        movl r3_buf, %esi
+
+        R3_LOOP:
+        cmp r3_sz, %ecx
+        jge R3_FIN
+        xorl %ebx, %ebx
+        movb (%esi, %ecx, 1), %bl
+        cmp $48, %ebx # %ebx < '0' ?
+        jl R3_FIN
+        cmp $57, %ebx # %ebx > '9' ?
+        jg R3_FIN
+        movl $10, %edx
+        mul %edx
+        subl $48, %ebx
+        addl %ebx, %eax
+        incl %ecx
+        jmp R3_LOOP
+
+        R3_FIN:
+        movl %eax, r3_value
+    popal
+
+    pushl r3_value
+    pushl r3_rip
+    ret
+

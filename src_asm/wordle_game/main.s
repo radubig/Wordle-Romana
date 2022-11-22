@@ -8,9 +8,11 @@
     l_guess: .space 10
     l_inputlen: .space 4
     
-    test_file: .asciz "cuvinte.txt"
+    test_file: .asciz "dummy.txt"
     test_bun: .asciz "Fisierul exista!\n"
     test_rau: .asciz "Fisierul NU exista!\n"
+    test_fd: .long 0
+    test_buf: .space 10
 
 .text
 .global main
@@ -18,7 +20,7 @@ main:
     # Initialize the dictionary and the game
     call word_dict__init
 
-    # Test access
+    # Test _read_int
 
     pushl $test_file
     call _access
@@ -26,9 +28,19 @@ main:
 
     cmp $1, %eax
     jne nu_exista
-    pushl $test_bun
-    call _stdout
-    jmp b_end
+
+    pushl $test_file
+    call _open
+    popl test_fd
+
+    pushl test_fd
+    pushl $test_buf
+    call _read_int
+    popl %eax
+
+    b_test:
+    xorl %ebx, %ebx
+
     nu_exista:
     pushl $test_rau
     call _stdout
