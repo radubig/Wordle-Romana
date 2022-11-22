@@ -13,6 +13,7 @@
     test_rau: .asciz "Fisierul NU exista!\n"
     test_fd: .long 0
     test_buf: .space 10
+    test_del: .asciz "dummy2.txt"
 
 .text
 .global main
@@ -44,6 +45,9 @@ main:
     pushl $1
     pushl %eax
     call _write_int
+
+    pushl $test_del
+    call _unlink
 
     jmp b_end
 
