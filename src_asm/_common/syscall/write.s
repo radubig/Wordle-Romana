@@ -124,3 +124,106 @@ _stdout_sz:
     # Function footer
     pushl _rip_4
     ret
+
+
+# Description
+#    Writes an integer to a file descriptor, followed by a newline.
+# Usage:
+#    pushl [file_descriptor]
+#    pushl [value]
+#    call _write_int
+.data
+    _rip_5: .space 4
+    val_5: .space 4
+    fd_5: .space 4
+    sz_5: .long 0
+    buf_rev: .space 12
+    buf_fwd: .space 12
+.text
+.global _write_int
+_write_int:
+    popl _rip_5
+    popl val_5
+    popl fd_5
+
+    pushal
+        # Load the number in reverse
+        movl val_5, %eax
+        xorl %edx, %edx
+        xorl %ecx, %ecx
+        lea buf_rev, %edi
+        movl $10, %ebx
+        L_5:
+            divl %ebx
+            addl $48, %edx
+            movb %dl, (%edi, %ecx, 1)
+            xorl %edx, %edx
+            incl %ecx
+            cmp $0, %eax
+            jne L_5
+
+        movl %ecx, sz_5
+        # Reverse the string
+        decl %ecx
+        xorl %eax, %eax
+        lea buf_rev, %esi
+        lea buf_fwd, %edi
+        L_5_1:
+            cmp sz_5, %eax
+            jge L_5_2
+            movb (%esi, %ecx, 1), %bl
+            movb %bl, (%edi, %eax, 1)
+            incl %eax
+            decl %ecx
+            jmp L_5_1
+
+        L_5_2:
+        # Add newline
+        movl $10, %ebx
+        movb %bl, (%edi, %eax, 1)
+        incl sz_5
+
+    popal
+
+    # Write Data
+    pushl fd_5
+    pushl $buf_fwd
+    pushl sz_5
+    call _write_sz
+
+    pushl _rip_5
+    ret
+
+
+# Description
+#    Writes data to a file descriptor (fixed size)
+# Usage:
+#    pushl [file_descriptor]
+#    pushl *[data]
+#    pushl size
+#    call _stdout_sz
+.data
+    _rip_6: .space 4
+    p_data_6: .space 4
+    p_size_6: .long 0
+    fd_6: .long 0
+.text
+.global _write_sz
+_write_sz:
+    # Function header
+    popl _rip_6
+    popl p_size_6
+    popl p_data_6
+    popl fd_6
+
+    pushal
+        movl $4, %eax # syscall 4: write
+        movl fd_6, %ebx # file_descriptor
+        movl p_data_6, %ecx # data
+        movl p_size_6, %edx # length
+        int $0x80
+    popal
+
+    # Function footer
+    pushl _rip_6
+    ret

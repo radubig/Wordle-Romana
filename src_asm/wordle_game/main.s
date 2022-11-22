@@ -38,9 +38,12 @@ main:
     call _read_int
     popl %eax
 
-    b_test:
     pushl test_fd
     call _close
+
+    pushl $1
+    pushl %eax
+    call _write_int
 
     jmp b_end
 
