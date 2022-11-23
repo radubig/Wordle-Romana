@@ -1,5 +1,2 @@
 TODO:
  * (Radu): Cleanup forgotten breakpoints
- * Update README.md
- * Pack executables into Release_ASM
- * Enjoy that sweet ol' 10 at ASC

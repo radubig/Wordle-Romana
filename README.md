@@ -12,8 +12,8 @@
 Acest repositoriu contine codul sursa pentru proiectul Wordle. 
 
 Proiectul este scris in 2 limbaje de programare:
-- C++ (cod sursa in [src/](src))
-- x86 Assembly (cod sura in [src_asm/](src_asm))
+- **C++** _(codul sursa in [src/](src), programele compilate in [release/](release))_
+- **x86 Assembly** _(codul sura in [src_asm/](src_asm), programele compilate in [release_asm/](release_asm))_
 
 ## Informatii proiect C++
 

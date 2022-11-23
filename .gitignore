@@ -2,3 +2,5 @@
 /cmake-build-release/
 /.idea/
 
+release_asm/wg_data.txt
+release_asm/wp_data.txt
