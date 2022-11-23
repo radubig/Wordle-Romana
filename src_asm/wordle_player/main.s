@@ -12,6 +12,7 @@
     test_pattern: .long 0
     str_guess: .asciz "[Guess]: "
     str_received: .asciz "[Received]: "
+    str_fin: .asciz "Numarul total de incercari este: "
     file_send: .asciz "wp_data.txt"
     file_send_s: .asciz "wp_done.txt"
     file_receive: .asciz "wg_data.txt"
@@ -20,12 +21,6 @@
 .text
 .global main
 main:
-    # TODO: Remove WordleGame dependency!
-
-    # Test begin
-    # 6046 MLAJI
-    # pushl $6046
-    # call wordle_game__reset_forced_word
 
     call word_dict__init
     call wordle_player__reset
@@ -116,5 +111,12 @@ main:
         jmp test_loop
 
     test_loop_fin:
+    pushl $str_fin
+    call _stdout
+    pushl $1
+    movl WP_NO_GUESSES, %eax
+    incl %eax
+    pushl %eax
+    call _write_int
 
     call _exit

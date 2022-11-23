@@ -12,7 +12,7 @@
     fd_1: .space 4
     str_received: .asciz "[Received]: "
     str_pattern: .asciz "[Pattern]: "
-
+    str_target: .asciz "Cuvantul de ghicit a fost "
 .text
 .global main
 main:
@@ -21,11 +21,6 @@ main:
 
     call wordle_game__get_target
     popl test_target
-    /*
-    pushl test_target
-    pushl $6
-    call _stdout_sz
-    */
 
     test_loop:
         # Wait to read guess
@@ -103,4 +98,10 @@ main:
         jmp test_loop
 
     test_loop_fin:
+    pushl $str_target
+    call _stdout
+    pushl test_target
+    pushl $6
+    call _stdout_sz
+
     call _exit
