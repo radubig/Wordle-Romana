@@ -15,6 +15,8 @@ Proiectul este scris in 2 limbaje de programare:
 - **C++** _(codul sursa in [src/](src), programele compilate in [release/](release))_
 - **x86 Assembly** _(codul sura in [src_asm/](src_asm), programele compilate in [release_asm/](release_asm))_
 
+Fisierul de solutii se afla in [data/solutii.txt](data/solutii.txt).
+
 ## Informatii proiect C++
 
 <details>
