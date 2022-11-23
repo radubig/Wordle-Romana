@@ -1,96 +1,106 @@
 .data
-    INTRO_TEXT: .asciz "Wordle: Incearca sa ghicesti un cuvant de 5 litere!\nVei primi la fiecare incercare indicatii despre ce litere fac parte din cuvant.\n\nEsti pregatit? Tasteaza un cuvant de 5 litere:\n";
     NOT_5_CHARS: .asciz "Cuvantul introdus nu are 5 litere!\nIntrodu un alt cuvant:\n"
     
-    pattern_code: .byte 255
-    guesses: .long 0
-
-    l_guess: .space 10
-    l_inputlen: .space 4
-    
-    test_file: .asciz "dummy.txt"
-    test_bun: .asciz "Fisierul exista!\n"
-    test_rau: .asciz "Fisierul NU exista!\n"
-    test_fd: .long 0
-    test_buf: .space 10
-    test_del: .asciz "dummy2.txt"
+    newline: .asciz "\n"
+    test_target: .space 4
+    test_guess: .zero 8
+    test_pattern: .long 0
+    file_receive: .asciz "wp_data.txt"
+    file_receive_s: .asciz "wp_done.txt"
+    file_send: .asciz "wg_data.txt"
+    file_send_s: .asciz "wg_done.txt"
+    fd_1: .space 4
+    str_received: .asciz "[Received]: "
+    str_pattern: .asciz "[Pattern]: "
 
 .text
 .global main
 main:
-    # Initialize the dictionary and the game
     call word_dict__init
+    call wordle_game__reset
 
-    # Test _read_int
+    call wordle_game__get_target
+    popl test_target
+    /*
+    pushl test_target
+    pushl $6
+    call _stdout_sz
+    */
 
-    pushl $test_file
-    call _access
-    popl %eax
+    test_loop:
+        # Wait to read guess
+        test_wait:
+            pushl $file_receive_s
+            call _access
+            popl %eax
+            cmp $0, %eax
+            je test_wait
 
-    cmp $1, %eax
-    jne nu_exista
+        # We are ready to read guess, remove the semaphore
+        pushl $file_receive_s
+        call _unlink
 
-    pushl $test_file
-    call _open
-    popl test_fd
+        # Read guess
+        pushl $file_receive
+        call _open
+        popl fd_1
 
-    pushl test_fd
-    pushl $test_buf
-    call _read_int
-    popl %eax
+        pushl fd_1
+        pushl $test_guess
+        pushl $5
+        call _read
+        popl %eax # Garbage
 
-    pushl test_fd
-    call _close
+        pushl fd_1
+        call _close
 
-    pushl $test_del
-    call _open_w
-    popl test_fd
+        # Print the received guess to console
+        pushl $str_received
+        call _stdout
+        pushl $test_guess
+        pushl $5
+        call _stdout_sz
+        pushl $newline
+        call _stdout
 
-    pushl test_fd
-    pushl %eax
-    call _write_int
+        # Calculate pattern
+        pushl $test_guess
+        call wordle_game__guess
+        popl test_pattern
 
-    pushl test_fd
-    call _close
+        # Print the pattern to console
+        pushl $str_pattern
+        call _stdout
+        pushl $1
+        pushl test_pattern
+        call _write_int
 
-    jmp b_end
+        # Send the pattern to file
+        pushl $file_send
+        call _open_w
+        popl fd_1
 
-    nu_exista:
-    pushl $test_rau
-    call _stdout
+        pushl fd_1
+        pushl test_pattern
+        call _write_int
 
-    b_end:
-    call _exit
+        pushl fd_1
+        call _close
 
-    # End of test
+        # Set the semaphore
+        pushl $file_send_s
+        call _open_w
+        popl fd_1
 
-    # Display the intro text
-    pushl $INTRO_TEXT
-    call _stdout
-    
-    # TODO: Add some kinda loop here
-        # Read the guess
-        pushl $l_guess
-        pushl $10
-        call _stdin
-        popl %eax # discard
+        pushl fd_1
+        call _close
 
-        # Calculate length of guess    
-        pushl $l_guess
-        pushl $10
-        call string__length_with_trim
-        popl l_inputlen
-        
-        # Throw an error if guess is not 5 characters
-        # TODO: This is useless (read todo.txt)
-        cmpl $5, l_inputlen
-        je et_len
-            pushl $NOT_5_CHARS
-            call _stdout
-        et_len:
-        
-        # Make guess uppercase
-        pushl $l_guess
-        call string__to_upper
+        # Check if the game is finished
+        mov $121, %eax
+        cmp test_pattern, %eax
+        je test_loop_fin
 
+        jmp test_loop
+
+    test_loop_fin:
     call _exit

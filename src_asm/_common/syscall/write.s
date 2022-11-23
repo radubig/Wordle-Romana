@@ -201,7 +201,7 @@ _write_int:
 #    pushl [file_descriptor]
 #    pushl *[data]
 #    pushl size
-#    call _stdout_sz
+#    call _write_sz
 .data
     _rip_6: .space 4
     p_data_6: .space 4

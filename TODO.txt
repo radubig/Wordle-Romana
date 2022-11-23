@@ -7,7 +7,7 @@
 
 
 TODO:
- * Do the rest of the IPC
+ * (done) Do the rest of the IPC
  * Remove dependency at the end
 
 Dump of playtest (pls don't delete this yet from here)

@@ -75,7 +75,7 @@ _close:
 #    Opens a file for writing (and creates it if it doesn't exist)
 # Usage:
 #    pushl *[file_name]
-#    call _open
+#    call _open_w
 #    popl [file_descriptor]
 .data
     ERR_MSG_1q: .asciz "A aparut o eroare la deschiderea fisierului "
@@ -96,7 +96,7 @@ _open_w:
         movl $5, %eax # syscall 5: open
         movl p_filenameq, %ebx # file_name
         movl $0101, %ecx # O_RDONLY | O_CREAT
-        movl $0700, %edx # idk
+        movl $0666, %edx # idk
         int $0x80
         movl %eax, r_fdq # file_descriptor
         popal
