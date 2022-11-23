@@ -16,6 +16,7 @@ private:
 public:
     explicit wordle_game(const word_dict& dict) : dictionary(dict)
     {
+        srand(time(nullptr)); // NOLINT(cert-msc51-cpp)
         this->reset();
     }
     void reset(const std::string& forceWord = "");
