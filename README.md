@@ -4,11 +4,8 @@
 #### Facultatea de Matematica si Informatica
 
 ### Autori:
-- [Coltos Radu-Mihai](https://github.com/radubig) (Grupa 151)
-- [Mera Jean-Robert](https://github.com/MeraJean) (Grupa 151)
-### Contact:
-- [radu-mihai.coltos@s.unibuc.ro](mailto:radu-mihai.coltos@s.unibuc.ro)
-- (TODO: insert jean email here)
+- [Coltos Radu-Mihai](https://github.com/radubig) (Grupa 151) [<radu-mihai.coltos@s.unibuc.ro>](mailto:radu-mihai.coltos@s.unibuc.ro)
+- [Mera Jean-Robert](https://github.com/MeraJean) (Grupa 151) [<jean-robert.mera@s.unibuc.ro>](mailto:jean-robert.mera@s.unibuc.ro)
 
 ## Introducere
 
@@ -18,9 +15,8 @@ Proiectul este scris in 2 versiuni diferite:
 - **Versiunea C++** _(codul sursa in [src/](src), programele compilate in [release/](release))_
 - **Versiunea x86_32 Assembly** _(codul sura in [src_asm/](src_asm), programele compilate in [release_asm/](release_asm))_
 
-Numarul mediu de incercari este `3.99`(3.9895).
-
-Fisierul de solutii se afla in [data/solutii.txt](data/solutii.txt). <br />
+Numarul mediu de incercari este `3.9895`.  
+Fisierul de solutii se afla in [data/solutii.txt](data/solutii.txt).  
 Mai multe statistici legate de acest proiect se afla in folderul [data/](data).
 
 Fisierul [CMakeLists.txt](CMakeLists.txt) contine target-urile pentru compilarea ambelor versiuni.
@@ -80,7 +76,7 @@ Cum aceasta metoda este costisitoare ca timp de executie, aplicam cateva eficien
 Astfel, la acest pas este din nou evitata calcularea entropiilor si lista de cuvinte posibile ramase devine foarte mica comparativ cu cea initiala.
 - In cazul in care doua cuvinte au entropii egale, il prioritizam pe cel care ar putea fi solutie.
 
-Pattern-urile sunt siruri de 5 cifre ce codeaza culoarea unei litere: `0` daca litera este gri, `1` daca litera este verde, respectiv `2`daca litera este galben. Pentru a transmite mai eficient aceste siruri ca date, le consideram ca fiind un numar in baza 3 si le convertim in baza 10 (de exemplu sirul `10201` devine 81 + 0 + 2 * 9 + 0 + 1 = 100). 
+Pattern-urile sunt siruri de 5 cifre ce codeaza culoarea unei litere: `0` daca litera este gri, `1` daca litera este verde, respectiv `2` daca litera este galben. Pentru a transmite mai eficient aceste siruri ca date, le consideram ca fiind un numar in baza 3 si le convertim in baza 10 (de exemplu sirul `10201` devine 81 + 0 + 2 * 9 + 0 + 1 = 100). 
 Numerele astfel convertite sunt pattern-urile transmise de `WordleGame`.
 
 </details>
