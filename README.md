@@ -4,7 +4,7 @@
 #### Facultatea de Matematica si Informatica
 
 ### Autori:
-- [Coltos Radu-Mihai](https://github.com/radubig) (Grupa 151) [radu-mihai.coltos@s.unibuc.ro](mailto:radu-mihai.coltos@s.unibuc.ro)
+- [Coltos Radu-Mihai](https://github.com/radubig) (Grupa 151)
 - [Mera Jean-Robert](https://github.com/MeraJean) (Grupa 151)
 ### Contact:
 - [radu-mihai.coltos@s.unibuc.ro](mailto:radu-mihai.coltos@s.unibuc.ro)
