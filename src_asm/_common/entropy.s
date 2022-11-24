@@ -209,6 +209,8 @@ entropy__calculate_entropy:
             movl %ebx, 0(%edi)
             movb 4(%esi), %bl
             movb %bl, 4(%edi)
+            movl e_guess_in_dict, %ebx
+            movl %ebx, mx_in_dict
 
         FOR_EACH_GUESS_FROM_DICT__fin:
             addl $6, %eax
