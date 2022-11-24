@@ -21,6 +21,8 @@ Mai multe statistici legate de acest proiect se afla in folderul [data/](data).
 
 Fisierul [CMakeLists.txt](CMakeLists.txt) contine target-urile pentru compilarea ambelor versiuni.
 
+Pentru dezvoltarea proiectului am folosit mediul de lucru [CLion](https://www.jetbrains.com/clion/).
+
 ## Informatii versiune C++
 
 <details>
