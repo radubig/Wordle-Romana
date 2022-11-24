@@ -46,11 +46,13 @@ entropy__clear_patterns:
 
     mx_string: .space 5
     mx_entropy: .float 0
+    mx_in_dict: .long 0
 
     e_patterns: .space 1000
     #NUM_PATTERNS = 243
     e_current_guess: .space 5
     e_current_target: .space 5
+    e_guess_in_dict: .long 0
     e_cod_p: .long 0
     e_ent: .float 0
     e_p: .float 0
@@ -68,11 +70,12 @@ entropy__calculate_entropy:
 
     fldz
     fstps mx_entropy
+    movl $0, mx_in_dict
 
     ## Begin reg block
     pushal
         # Iterate over all words from e_dict
-        mov e_dict_sz, %ecx
+        xorl %ecx, %ecx
         xorl %eax, %eax
         FOR_EACH_GUESS_FROM_DICT:
 
@@ -172,14 +175,31 @@ entropy__calculate_entropy:
             popal
             # Doamne ajuta
 
+            # Test if current guess is in dictionary
+            xorl %ebx, %ebx
+            mov e_cuvram, %esi
+            movb (%esi, %ecx, 1), %bl
+            movl %ebx, e_guess_in_dict
+
             # Update mx_string
             # fcomip face ultimul ? primul
             flds mx_entropy
             flds e_ent
             fcomip
             fstp %st
-            jbe FOR_EACH_GUESS_FROM_DICT__fin
+            jb FOR_EACH_GUESS_FROM_DICT__fin
+            ja ENT_UPDATE_MAX
 
+            # If entropies are equal, update max ONLY if guess is in dictionary
+            # && mx_in_dict == 0
+            movl mx_in_dict, %ebx
+            cmp $1, %ebx
+            je FOR_EACH_GUESS_FROM_DICT__fin
+            movl e_guess_in_dict, %ebx
+            cmp $0, %ebx
+            je FOR_EACH_GUESS_FROM_DICT__fin
+
+        ENT_UPDATE_MAX:
             # Update max
             flds e_ent
             fstps mx_entropy
@@ -192,8 +212,8 @@ entropy__calculate_entropy:
 
         FOR_EACH_GUESS_FROM_DICT__fin:
             addl $6, %eax
-            decl %ecx
-            cmp $0, %ecx
+            incl %ecx
+            cmp e_dict_sz, %ecx
             je FOR_EXIT_1
             jmp FOR_EACH_GUESS_FROM_DICT
         FOR_EXIT_1:
