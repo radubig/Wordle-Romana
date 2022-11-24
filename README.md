@@ -117,7 +117,7 @@ Acest program necesita fisierul [`cuvinte.txt`](data/cuvinte.txt) pentru a rula.
 ### Detalii despre implementare
 Aceasta versiune a programului foloseste sintaxa AT&T a limbajului Assembly. **NU** au fost folosite apeluri catre functii din C++; toate functiile au fost scrise de noi, inclusiv abstractizarile diferitelor syscall-uri. (Aceste abstractizari se regasesc in folderul [src_asm/_common/syscall/](src_asm/_common/syscall)). De asemnea, tot codul sursa a fost scris manual, fara ajutorul vreunui dezasamblor.
 
-Versiunea de assembly foloseste acelasi algoritm de determinare a ghicirii optime ca versiunea C++, insa nu implementeaza toate optimizarile celeilalte versiuni (singura optimizare implementata este hard-codarea primului guess `TAREI`). Din acest motiv, media de ghicire a cuvantului va fi putin mai mare decat in versiunea C++.
+Versiunea de assembly foloseste acelasi algoritm de determinare a ghicirii optime ca versiunea C++.
 
 </details>
 
