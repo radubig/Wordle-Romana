@@ -4,12 +4,12 @@
 #### Facultatea de Matematica si Informatica
 
 ### Autori:
-- [Coltos Radu-Mihai](https://github.com/radubig) (Grupa 151) [<radu-mihai.coltos@s.unibuc.ro>](mailto:radu-mihai.coltos@s.unibuc.ro)
-- [Mera Jean-Robert](https://github.com/MeraJean) (Grupa 151) [<jean-robert.mera@s.unibuc.ro>](mailto:jean-robert.mera@s.unibuc.ro)
+- [Coltos Radu-Mihai](https://github.com/radubig) [\<radu-mihai.coltos@s.unibuc.ro\>](mailto:radu-mihai.coltos@s.unibuc.ro) (Grupa 151)
+- [Mera Jean-Robert](https://github.com/MeraJean) [\<jean-robert.mera@s.unibuc.ro\>](mailto:jean-robert.mera@s.unibuc.ro) (Grupa 151)
 
 ## Introducere
 
-Acest repertoriu contine codul sursa pentru proiectul Wordle. 
+Acest repertoriu contine codul sursa pentru proiectul Wordle.
 
 Proiectul este scris in 2 versiuni diferite:
 - **Versiunea C++** _(codul sursa in [src/](src), programele compilate in [release/](release))_
@@ -72,11 +72,11 @@ Pentru a determina care este cea mai optima ghicire, calculam entropia tuturor c
 
 Cum aceasta metoda este costisitoare ca timp de executie, aplicam cateva eficientizari:
 - Prima ghicire este intotdeauna `TAREI` deoarece are cea mai mare entropie; aceasta este hard-coded si astfel salvam cateva secunde ca timp de executie, totodata reducand drastic numarul cuvintelor posibile ramase (in medie de aproximativ 6 ori).
-- Cum exista doar 243 de pattern-uri posibile pentru `TAREI` (3^5 sau 3 culori pentru fiecare litera), am precalculat pentru fiecare pattern cel mai optim cuvant care trebuie ghicit in continuare. 
-Astfel, la acest pas este din nou evitata calcularea entropiilor si lista de cuvinte posibile ramase devine foarte mica comparativ cu cea initiala.
+- Cum exista doar 243 de pattern-uri posibile pentru `TAREI` (3^5 sau 3 culori pentru fiecare litera), am precalculat pentru fiecare pattern cel mai optim cuvant care trebuie ghicit in continuare.
+  Astfel, la acest pas este din nou evitata calcularea entropiilor si lista de cuvinte posibile ramase devine foarte mica comparativ cu cea initiala.
 - In cazul in care doua cuvinte au entropii egale, il prioritizam pe cel care ar putea fi solutie.
 
-Pattern-urile sunt siruri de 5 cifre ce codeaza culoarea unei litere: `0` daca litera este gri, `1` daca litera este verde, respectiv `2` daca litera este galben. Pentru a transmite mai eficient aceste siruri ca date, le consideram ca fiind un numar in baza 3 si le convertim in baza 10 (de exemplu sirul `10201` devine 81 + 0 + 2 * 9 + 0 + 1 = 100). 
+Pattern-urile sunt siruri de 5 cifre ce codeaza culoarea unei litere: `0` daca litera este gri, `1` daca litera este verde, respectiv `2` daca litera este galben. Pentru a transmite mai eficient aceste siruri ca date, le consideram ca fiind un numar in baza 3 si le convertim in baza 10 (de exemplu sirul `10201` devine 81 + 0 + 2 * 9 + 0 + 1 = 100).
 Numerele astfel convertite sunt pattern-urile transmise de `WordleGame`.
 
 </details>
@@ -118,3 +118,13 @@ Aceasta versiune a programului foloseste sintaxa AT&T a limbajului Assembly. **N
 Versiunea de assembly foloseste acelasi algoritm de determinare a ghicirii optime ca versiunea C++, insa nu implementeaza toate optimizarile celeilalte versiuni (singura optimizare implementata este hard-codarea primului guess `TAREI`). Din acest motiv, media de ghicire a cuvantului va fi putin mai mare decat in versiunea C++.
 
 </details>
+
+## Referinte
+
+- [Arhitectura Sistemelor de Calcul - Curs 0x02](https://cs.unibuc.ro/~crusu/asc/Arhitectura%20Sistemelor%20de%20Calcul%20(ASC)%20-%20Curs%200x02.pdf) (Cristian Rusu)
+- [Arhitectura Sistemelor de Calcul - Proiect 0x00](https://cs.unibuc.ro/~crusu/asc/Arhitectura%20Sistemelor%20de%20Calcul%20(ASC)%20-%20Proiect%200x00%202022.pdf) (Cristian Rusu)
+- [Arhitectura Sistemelor de Calcul Laborator - Partea 0x00](https://cs.unibuc.ro/~crusu/asc/Arhitectura%20Sistemelor%20de%20Calcul%20(ASC)%20-%20Laborator%20Partea%200x00.pdf) (Bogdan Macovei, Ruxandra Balucea, Cristian Rusu)
+- [Arhitectura Sistemelor de Calcul Laborator - Partea 0x01](https://cs.unibuc.ro/~crusu/asc/Arhitectura%20Sistemelor%20de%20Calcul%20(ASC)%20-%20Laborator%20Partea%200x01.pdf) (Bogdan Macovei, Ruxandra Balucea, Cristian Rusu)
+- [Intel® 64 and IA-32 Architectures Software Developer’s Manual](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html) (Intel)
+- [Linux System Call Table](https://chromium.googlesource.com/chromiumos/docs/+/master/constants/syscalls.md#x86-32_bit) (Chromium OS Docs, compiled from Linux headers)
+- [Solving Wordle using information theory](https://www.youtube.com/watch?v=v68zYyaEmEA) (3Blue1Brown)
